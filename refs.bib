@@ -1,0 +1,60 @@
+\documentclass[times, utf8, zavrsni]{fer}
+\usepackage{booktabs}
+
+\usepackage{mathtools, amsmath,amsfonts,amssymb, amsthm}
+\usepackage{acronym}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{graphicx}
+\graphicspath{ {Figures/} }
+
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\begin{document}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\thesisnumber{4756}
+\title{Sustav potpore odlučivanju za predviđanje i optimalnu nabavu
+}
+\engtitle{A decision support system for forecasting and optimal procurement}
+\author{Neven Miculinić}
+
+\maketitle
+
+\zahvala{I'd like to thank my supervisor prof. João Pedro Pedroso, FEUP, for his guidance during writing this Bachelor thesis}
+
+\chapter*{Bachelor thesis assignment}
+
+Optimal procurement in most industries involves forecasting of two
+quantities: prices of raw materials and customer's demand.  The aim of
+this work is to integrate forecasts into production planning models,
+with the aim of minimizing overall procurement, holding and production
+costs under demand satisfaction constraints.  The decision support
+system should allow the decision maker to integrate qualitative,
+unstructured information through a simple interface, for scenario
+selection and solution refinement
+
+\tableofcontents
+
+
+\include{Content/definition}
+\include{Content/solution-det}
+\include{Content/ts-analysis}
+\include{Content/application}
+\include{Content/conc}
+
+\bibliography{refs}
+\bibliographystyle{fer}
+
+\begin{sazetak}
+    Optimalna nabava u većini industrija uključuje predviđanje dviju veliničina: cijene sirovina i potražnje. Cilj ovoga rada je ujediniti predviđanje u model planiranja proizvodnje sa ciljem minimiziranja cjelokupne nabave, troškova skladištenja i proizvodnje uz zadovoljenje potražnje. Sustav potpore odlučivanju treba omogućiti donositelju odluke integraciju kvalitativne nestrukturiranje informacije kroz jednostavno sučelje, odabir scenarija i profinjenje rješenja.
+
+
+\kljucnerijeci{planiranje nabave, stohastička potražnja, optimalna količina nabave, Model dinamičke ekonomske količine nabave}
+\end{sazetak}
+\include{FrontBackMatter/abstract}
+
+\end{document}

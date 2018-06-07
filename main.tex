@@ -1,0 +1,59 @@
+\documentclass[times, utf8, diplomski, english]{fer}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+% TODO: Navedite broj rada.
+\thesisnumber{1572}
+
+% TODO: Navedite naslov rada.
+\title{ End-to-End Deep Learning Model for Base Calling of MinION Nanopore Reads}
+
+% TODO: Navedite svoje ime i prezime.
+\author{Neven Miculinić}
+\maketitle
+ 
+% Ispis stranice s napomenom o umetanju izvornika rada. Uklonite naredbu \izvornik ako želite izbaciti tu stranicu.
+\izvornik
+
+% Dodavanje zahvale ili prazne stranice. Ako ne želite dodati zahvalu, naredbu ostavite radi prazne stranice.
+\zahvala{I would like to thank my mentor, Mile Šikić, for his patient guidance, encouragement
+	and advice provided over the years.
+	
+I would also like to thank my family and friends for their
+	continuous support.
+	
+In the end, honorable mentions go to Marko Ratković for his help with this thesis.	
+}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\chapter{Introduction}
+I wanna cite somebody\citep{oetiket2007lshort}
+
+Thesis introduction.
+
+\chapter{Conclusion}
+Conclusion.
+
+\bibliography{literatura}
+\bibliographystyle{unsrtnat}
+% \bibliographystyle{plainnat}
+
+\begin{abstract}
+In the MinION device, single-stranded DNA fragments move through nanopores, which causes drops in the electric current. The electric current is measured at each pore several thousand times per second. Each event is described by the mean and variance of the current and by event duration. This sequence of events is then translated into a DNA sequence by a base caller. Develop a base-caller for MinION nanopore sequencing platform using a deep learning architecture such as convolutional neural networks and recurrent neural networks. Instead of events, use current waveform at the input. Compare the accuracy with the state-of-the-art basecallers. For testing purposes use publicly, available datasets and Graphmap or Minimap 2 tools for aligning called reads on reference genomes.  Implement method using TensorFlow or similar library. The code should be documented and hosted on a publicly available Github repository.
+
+\keywords{Keywords.}
+\end{abstract}
+
+% TODO: Navedite naslov na hrvatskom jeziku.
+\hrtitle{S kraja na kraj model dubokog učenja za određivanje očitanih baza dobivenih uređajem za sekvenciranje MinION}
+\begin{sazetak}
+    Unutar uređaja MinION, fragmenti jednostruke DNA prolaze kroz nanopore, što uzrokuje promjene u električnoj struji. Struja proizvedena na svakoj nanopori mjeri se nekoliko tisuća puta u sekundi. Svaki događaj opisan je srednjom vrijednosti i varijancom struje te svojim trajanjem. Postupak kojim se takav slijed događaja prevodi u niz nukleotida naziva se određivanje očitanih baza. Razviti alat za prozivanje baza za uređaj za sekvenciranje MinION koristeći modele dubokog učenje kao što su konvolucijske i povratne neuronske mreže. Umjesto događaja na ulazu koristi valni oblik struje. Usporediti dobivenu točnost s postojećim rješenjima. U svrhu testiranja koristiti javno dostupne skupove podataka i alate GraphMap ili Minimap 2 za poravnanje očitanja na referentni genom. Alat implementirati koristeći programsku biblioteku TensorFlow (ili neku sličnu). Programski kod treba biti dokumentiran i javno dostupan preko repozitorija GitHub.
+\kljucnerijeci{Ključne riječi, odvojene zarezima.}
+\end{sazetak}
+
+\end{document}
