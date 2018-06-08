@@ -1,23 +1,24 @@
 \documentclass[times, utf8, diplomski, english]{fer}
 \usepackage{booktabs}
 \usepackage[hidelinks]{hyperref}
+\usepackage{footnote}
+\usepackage{graphicx}
+
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+
+\graphicspath{ {./figures/} }
+
 
 \begin{document}
 
-% TODO: Navedite broj rada.
 \thesisnumber{1572}
-
-% TODO: Navedite naslov rada.
 \title{ End-to-End Deep Learning Model for Base Calling of MinION Nanopore Reads}
-
-% TODO: Navedite svoje ime i prezime.
 \author{Neven Miculinić}
 \maketitle
  
-% Ispis stranice s napomenom o umetanju izvornika rada. Uklonite naredbu \izvornik ako želite izbaciti tu stranicu.
 \izvornik
 
-% Dodavanje zahvale ili prazne stranice. Ako ne želite dodati zahvalu, naredbu ostavite radi prazne stranice.
 \zahvala{I would like to thank my mentor, Mile Šikić, for his patient guidance, encouragement
 	and advice provided over the years.
 	
@@ -31,13 +32,12 @@ In the end, honorable mentions go to Marko Ratković for his help with this thes
 \listoffigures
 \listoftables
 
-\chapter{Introduction}
-I wanna cite somebody\citep{oetiket2007lshort}
-
-Thesis introduction.
-
+\input{./chapters/introduction}
+\input{./chapters/background}
+\chapter{Methods}
+\chapter{Implementation}
+\chapter{Results}
 \chapter{Conclusion}
-Conclusion.
 
 \bibliography{literatura}
 \bibliographystyle{unsrtnat}
