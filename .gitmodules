@@ -1,0 +1,3 @@
+[submodule "minion-data"]
+	path = minion-data
+	url = https://github.com/nmiculinic/minion-data.git

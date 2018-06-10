@@ -4,11 +4,13 @@
 \usepackage{footnote}
 \usepackage{graphicx}
 
+\usepackage{listings}
+\usepackage{protobuf/lang}  % include language definition for protobuf
+\usepackage{protobuf/style} % include custom style for proto declarations.
+
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
-
 \graphicspath{ {./figures/} }
-
 
 \begin{document}
 
@@ -97,8 +99,6 @@ PacBio developed sequencing method that allowed read lengths up to several thous
 
 Cost makes the biggest obstacle stopping widespread genome sequencing. The release of, previously mentioned, MinION sequencer made sequencing less expensive and even portable.
 
-
-
 \section{Oxford Nanopore MinION}
 
 The MinION device by Oxford Nanopore Technologies is the first portable DNA sequencing device. Its small weight, low cost, and long read length combined with decent accuracy yield promising results in various applications including full human genome assembly \cite{human_seq} what could potentially lead to personalized genomic medicine.
@@ -170,6 +170,31 @@ It is available to the Nanopore Community served as a binary. The source code of
 
 \chapter{Methods}
 \chapter{Implementation}
+\subsection{Data Preparation}
+
+Data has been downloaded from \url{https://data.genomicsresearch.org/Projects/online_dataset/train_set_all/}.  The following species were provided there by the Chiron team:
+\begin{itemize}
+    \item Human
+    \item E. Coli
+    \item Lambda Phage
+\end{itemize}
+
+The raw dataset is transformed using my repo, minion-data~\footnote{\url{https://github.com/nmiculinic/minion-data}}. It defines common dataset training structure in the protobuf~\citep{protobuf} interface description language (IDL). The whole definition can be seen in figure~\ref{fg:dataset_proto}.
+
+\begin{figure}
+    \begin{center}
+        \lstinputlisting[language=protobuf3,style=protobuf]{minion-data/protos/dataset.proto}
+        \caption{dataset protobuf description}
+        \label{fg:dataset_proto}
+    \end{center}
+\end{figure}
+
+For the concrete Chiron dataset, the re-squiggled preparation method was used. (The data was re-squiggled, that is after aligning the read on the reference, the read data is improved and each base pairs place on the raw signal is calculated.)
+
+The re-squiggled basecalled data is located at \verb|/Analyses/RawGenomeCorrected_000/BaseCalled_template/Events|. The interesting code fragments are in function processDataPoint of file \verb|minion_data/preperation/_re_squggled.py| from minion-data python package.
+
+After the gzipped dataset is prepared, it goes into the training pipeline.
+
 \chapter{Results}
 \chapter{Conclusion}
 
