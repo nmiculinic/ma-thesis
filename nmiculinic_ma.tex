@@ -93,6 +93,8 @@ The MinION device by Oxford Nanopore Technologies is the first portable DNA sequ
 
 Under the hood, it has numerous nano-meter sized pores, thus a names Nanopore. Each pore has width of around 6 nucleotied. Under electric current DNA strand passed through the pore and changes its electric resistance. The sensor measures current through the pore multiple times a second~\footnote{The model we worked with had 4000 samples per seconds}. This signal varies depending which k-mer is occupying the pore, and on its basis we're performing the basecalling. On figure~\ref{fg:nanopore} this process is visually depicted. 
 
+MinION devices can produce long reads, usually tens of thousand base pairs (with reported reads lengths of 100 thousand \cite{loman1-100k} and even recently above 800 thousand base pairs \cite{loman2-800k}), but with high sequencing error than older generations of sequencing technologies.
+
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[width=0.7\textwidth]{nanopore}
@@ -105,8 +107,6 @@ Under the hood, it has numerous nano-meter sized pores, thus a names Nanopore. E
 
 The sequecing resulting file is in FAST5 format, which is adapted HDF5 file format, popular in bioinformatics community. It stores raw signal, alongside various metadata. Unfortunately, many basecallers, including the official ones, upon executing store their results in the FAST5 files. It leads to data and processing coupling in single file, and bloated file sizes. 
 
-MinION devices can produce long reads, usually tens of thousand base pairs (with reported reads lengths of 100 thousand \cite{loman1-100k} and even recently above 800 thousand base pairs \cite{loman2-800k}), but with high sequencing error than older generations of sequencing technologies.
-
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[width=0.6\textwidth]{fast5_sample}
@@ -115,31 +115,36 @@ MinION devices can produce long reads, usually tens of thousand base pairs (with
     \end{center}
 \end{figure}
 \footnotetext{https://support.hdfgroup.org/products/java/hdfview/}
-
   
-\section{Existing basecallers}
+\section{Related work}
 
-\subsection{Official}
-Oxford Nanopore has, with the R9 version of the platform, introduced a variety of base calling options. Some of those are production ready and some experimental. The majority of information regarding differences, specifications and similar is only available through Nanoporetech Community \footnote{https://community.nanoporetech.com/}.
+\subsection{Oxford Nanopore Technologies}
+This subsection covers various basecallers published by ONT, the MinION device maker.
+\subsubsection{Metrichor}
 
+Metrichor is now defunct cloud based basecaller. The older versions used \textit{hidden Markov models} (HMM) as underlying algorithm. Preprocessing started with segmenting signal into smaller chunks called events with their start, end, length, mean signal strength and standard deviation. This events are observations in the HMM model, and the underlying generating hidden sequence is sequence of 6-mers. They build their HMM transition matrix with stay, skip 1 and skip 2 probabilities, that is underlying 6-mer cannot move for more than 2 nucleotides per event. Basecalling is performed using Viterbi algorithm. This approach showed poor results when calling long homopolymer stretches as the context in the pore remains the same \cite{homopolymers}\cite{homopolimeri_analiza}.
 
-\textit{Metrichor} is an Oxford Nanopore company that offers cloud-based platform \textit{EPI2ME} for analysis of nanopore data. 
-Initially, base calling was only available by uploading data to the platform - that being the reason why this basecaller is often called Metrichor even though it is a name of the company.
+\subsubsection{Nanonet}
+Nanonet is ONT first generation neural network basecaller. It used to be available on github, but it's now defunct and unavailable.
 
-The older version of Metrichor relied on \textit{hidden Markov models} (HMM) to find the biological sequence corresponding to the signal. Preprocess included segmentation of the signal into smaller chunks called events defined by start location of the chunk, length, mean value and variance of the signal in the chunk. Metrichor than assumed that each event usually corresponds to a context of 6 bases being present in the pore and that the context is typically shifted by one base in each step. 
-The states of HMM are modeled as a context present in the pore and transition correspond to change of bases in the pore. During the transition from one state to another, an event is emitted. Base calling is performed using the Viterbi algorithm which determines the most likely sequence of states for the observed sequence of events. This approach showed poor results when calling long homopolymer stretches as the context in the pore remains the same \cite{homopolymers}\cite{homopolimeri_analiza}.
+\subsubsection{Albacore}
+Albacore is a production basecaller provided by Oxford Nanopore, and uses a command-line interface. It
+utilizes the latest in Recurrent Neural Network algorithms in order to interpret the signal data from the
+nanopore, and basecall the DNA or RNA passing through the pore. It implements stable features into
+Oxford Nanopore Technologies’ software products, and is fully supported. It receives .fast5 files as an
+input, and is capable of producing: 
+\begin{itemize}
+    \item .fast5 files appended with basecalled information
+    \item .fast5 files that have been processed, but basecall information present in a separate .fastq file
+\end{itemize}
 
-With the release of R9 chemistry, this model was replaced by a more accurate recurrent neural network (RNN) implementation. Currently, Oxford Nanopore offers several RNN-based local basecaller versions under different names: Albacore, Nanonet and basecaller integrated into MinKNOW \cite{ont-basecallers}.   
+\subsubsection{Guppy}
+Guppy is ONT's new basecaller that can use GPUs to basecall much faster than Albacore. Both the GridION X5 and PromethION contain GPUs and use Guppy to basecall while sequencing. Guppy can also use CPUs and scales well to many-CPU systems, so it may run faster than Albacore even without GPUs.  In the future it's intended to replace Albacore as production basecaller.
+\subsubsection{Scrappie}
+Scrappie\footnote{\url{https://github.com/nanoporetech/scrappie}} is ONT's research basecaller. Scrappie is reported to be the first basecaller that specifically address homopolymer base calling. It became publicly available just recently in June, 2017 and supports R9.4 and future R9.5 data.
 
-\textit{Albacore} is basecaller by Oxford Nanopore Technologies ready for production and actively supported.
-It is available to the Nanopore Community served as a binary. The source code of Albacore was not provided and is only available through the ONT Developer Channel. Tool supports only R9.4 and future R9.5 version of the chemistry.
+Unlike Albacore, Scrappie does not have fastq output, either directly or by writing it into the fast5 files – it only produces fasta reads.
 
-\textit{Nanonet}\footnote{\url{https://github.com/nanoporetech/nanonet/}} uses the same neural network that is used in Albacore but it is continually under development and does contain features such as error handling or logging needed for production use. It uses \textit{CURRENNT} library for running neural networks. It supportes basecalling of both R9 and R9.4 chemistry versions.
-
-
-\textit{Scrappie}\footnote{\url{https://github.com/nanoporetech/scrappie}} is another basecaller by Oxford Nanopore Technologies. Similar to Nanonet, it is the platform for ongoing development. Scrappie is reported to be the first basecaller  that specifically address homopolymer base calling. It became publicly available just recently in June, 2017 and supports R9.4 and future R9.5 data.
-
-\pagebreak
 \subsection{Third-party basecallers}
 
 \textit{Nanocall} \cite{David046086} was the first third-party open source basecaller for nanopore data. It uses HMM approach like the original R7 Metrichor. Nanocall does not support newer chemistries after R7.3.
