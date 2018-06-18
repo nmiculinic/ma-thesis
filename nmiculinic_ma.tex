@@ -147,10 +147,16 @@ Unlike Albacore, Scrappie does not have fastq output, either directly or by writ
 
 \subsection{Third-party basecallers}
 
-\textit{Nanocall} \cite{David046086} was the first third-party open source basecaller for nanopore data. It uses HMM approach like the original R7 Metrichor. Nanocall does not support newer chemistries after R7.3.
+\subsubsection{Nanocall}
+Nanocall~\citep{David046086} was the first third-party open source basecaller for nanopore data. It uses HMM approach like the original R7 Metrichor. Nanocall does not support newer chemistries after R7.3.
 
+\subsubsection{DeepNano}
+DeepNano~\citep{Boza2017}  was the first open-source basecaller based on neural networks. It uses bidirectional recurrent neural networks implemented in Python, using the Theano library. When released, originally only supported R7 chemistry, but support for R9 and R9.4 was added recently.
+\subsubsection{basecRAWller}
+basecRAWller~\footnote{\url{https://basecrawller.lbl.gov/}} is developed by Marcus Stoiber and James Brown at the Lawrence Berkeley National Laboratory.
 
-\textit{DeepNano} \cite{Boza2017}  was the first open-source basecaller based on neural networks. It uses bidirectional recurrent neural networks implemented in Python, using the Theano library. When released, originally only supported R7 chemistry, but support for R9 and R9.4 was added recently.
+\subsubsection{Chiron}
+Chiron~\citep{chiron_teng} is developed by Haotian Teng and others in Lachlan Coin's group at the University of Queensland. They are basecalling from the raw signal, using first residual convolutional neural network, than LSTM and finally beam search or greedy decoder depending on chosen configuration. 
 
 \chapter{Methods}
 In this chapter all key deep learning concepts shall be described. 

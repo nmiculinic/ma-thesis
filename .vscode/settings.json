@@ -4,6 +4,8 @@
         "Illumina",
         "Nanopore",
         "basecalling",
+        "convolutional",
+        "fasta",
         "nucleotides"
     ]
 }
