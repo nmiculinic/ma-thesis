@@ -39,6 +39,7 @@ In the end, honorable mentions go to Marko Ratković for his help with this thes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
 \label{chap:Introduction}
+% TODO: Refactor introduction
 In recent years,  deep learning methods significantly improved the state-of-the-art in multiple domains such as computer vision, speech recognition, and natural language processing \cite{LeCun:1998:CNI:303568.303704}\cite{NIPS2012_4824}. 
 In this thesis, we present application of deep learning in the field of  Bioinformatics for analysis of DNA sequencing data. 
 
@@ -84,14 +85,12 @@ Figure \ref{fg:sequencing} depicts process of sequencing visually.
 \end{figure}
 
 
-Development of sequencing started with work of Frederick Sanger \cite{mile} \cite{Pettersson2009}. In 1977, he developed the first sequencing method which allowed 
-read lengths up to 1000 bases with very high accuracy (99.9\%) at the cost of 1\$ per 1000 bases.
-Second generation sequencing (IAN Torrent and Illumina devices) reduced the price of sequencing while maintaining high accuracy. Mayor disadvantage of these devices is read length of only a few hundred base pairs. Short reads make resolving repetitive regions practically impossible.
+In 1977, Frederick Sanger~\citep{mile}\citep{Pettersson2009} started development of sequencing technologies. It allowed read lengths up to 1000 bases with very high accuracy(99.9\%) at the cost of 1\$ per 1000 bases.
+Later, seconds generation sequencing, like IAN Torrent and Illumina devices, reduced the price while keeping the accuracy high. However, they had a cost of shorter read lengths, about a few hundred base pairs, which makes resolving repetitive regions practically impossible.
 
-The need for technology able of producing longer reads led to the development of so-called third generation sequencing technologies.
-PacBio developed sequencing method that allowed read lengths up to several thousand bases but at the cost of smaller accuracy. Error Rates of PacBio devices are \textasciitilde10-15\%. 
+Third generation sequencing technologies have longer read lengths at the accuracy's expense. PacBio, for example, developed technology with a few thousand bases with error rates of \textasciitilde10-15\%. 
 
-Cost makes the biggest obstacle stopping widespread genome sequencing. The release of, previously mentioned, MinION sequencer made sequencing less expensive and even portable.
+MinION sequences, which this master thesis use, made sequencing less expensive and even portable.
 
 \section{Oxford Nanopore MinION}
 
