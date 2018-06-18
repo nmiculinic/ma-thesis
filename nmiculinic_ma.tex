@@ -89,11 +89,9 @@ MinION sequences, which this master thesis use, made sequencing less expensive a
 
 \section{Oxford Nanopore MinION}
 
-The MinION device by Oxford Nanopore Technologies is the first portable DNA sequencing device. Its small weight, low cost, and long read length combined with decent accuracy yield promising results in various applications including full human genome assembly \cite{human_seq} what could potentially lead to personalized genomic medicine.
+The MinION device by Oxford Nanopore Technologies is the first portable DNA sequencing device. Its small weight, low cost, and long read length combined with decent accuracy yield promising results in various applications including full human genome assembly \cite{human_seq} what could potentially lead to personalized genomic medicine. It weights only 87 grams, and its portability lead to uses on international space station and the antarctic among other places.
 
-\subsection{Technology}
-As its name says, nanoscaled pores are used to sequence DNA. An electrical potential is applied over a membrane in which a  pore is inserted. 
-As the DNA passes through the pore, the sensor detects changes in ionic current caused by different nucleotides present in the pore. Figure \ref{fg:nanopore} shows the change of ionic current as DNA strain is pulled through a nanopore.
+Under the hood, it has numerous nano-meter sized pores, thus a names Nanopore. Each pore has width of around 6 nucleotied. Under electric current DNA strand passed through the pore and changes its electric resistance. The sensor measures current through the pore multiple times a second~\footnote{The model we worked with had 4000 samples per seconds}. This signal varies depending which k-mer is occupying the pore, and on its basis we're performing the basecalling. On figure~\ref{fg:nanopore} this process is visually depicted. 
 
 \begin{figure}[!ht]
     \begin{center}
