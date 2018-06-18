@@ -103,8 +103,10 @@ Under the hood, it has numerous nano-meter sized pores, thus a names Nanopore. E
 \end{figure}
 \footnotetext{Figure adapted from https://nanoporetech.com/how-it-works}
 
+The sequecing resulting file is in FAST5 format, which is adapted HDF5 file format, popular in bioinformatics community. It stores raw signal, alongside various metadata. Unfortunately, many basecallers, including the official ones, upon executing store their results in the FAST5 files. It leads to data and processing coupling in single file, and bloated file sizes. 
 
-Official software called MinKNOW outputs sequencing data in FAST5 (a variant of the HDF5 standard) file format. It is a hierarchical file format with data arranged in a tree-structure of groups. Metadata are stored in group and dataset attributes. The same file format is during used different stages of analyses and groups, datasets and attributes are added incrementally. Figure \ref{fg:fast5} shows raw signal being present in the FAST5 file.
+MinION devices can produce long reads, usually tens of thousand base pairs (with reported reads lengths of 100 thousand \cite{loman1-100k} and even recently above 800 thousand base pairs \cite{loman2-800k}), but with high sequencing error than older generations of sequencing technologies.
+
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[width=0.6\textwidth]{fast5_sample}
@@ -113,12 +115,6 @@ Official software called MinKNOW outputs sequencing data in FAST5 (a variant of 
     \end{center}
 \end{figure}
 \footnotetext{https://support.hdfgroup.org/products/java/hdfview/}
-
-Minion offers the possibility of sequencing one or both strands of DNA. Sequencing both strands and combining information results in reads of higher quality. Those reads are called 2D (two-dimensional) reads. Otherwise, if the only single strand is sequenced 1D (one-dimensional) reads are produced.
-
-MinION devices can produce long reads, usually tens of thousand base pairs (with reported reads lengths of 100 thousand \cite{loman1-100k} and even recently above 800 thousand base pairs \cite{loman2-800k}), but with high sequencing error than older generations of sequencing technologies.
-Switch from older R7.3 to  R9 chemistry in 2016 increased accuracy of produced data. With this change, the accuracy of 1D data increased from 70\% to 85\% and the accuracy of 2D reads from 88\% to 94\% \cite{nanopore_video}.  This increase of accuracy makes 1D reads usable for analysis with benefits over 2D reads being faster sample preparation and faster sequencing. Developed tool in this thesis focuses on base calling 1D reads.
-
 
   
 \section{Existing basecallers}
