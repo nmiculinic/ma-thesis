@@ -305,14 +305,12 @@ Common choices are AvgPool, and MaxPool~\citep{Scherer:2010:EPO:1886436.1886447}
 \chapter{System architecture}
 \section{Data Preparation}
 
-Data has been downloaded from \url{https://data.genomicsresearch.org/Projects/online_dataset/train_set_all/}.  The following species were provided there by the Chiron team:
-\begin{itemize}
-    \item Human
-    \item E. Coli
-    \item Lambda Phage
-\end{itemize}
+In previous project incarnation, we used fast5 with additional custom .ref files as our dataset. This setup had some issues. First, it was IO heavy since we were reading the whole fast5 file which contained non-raw data section~\footnote{like basecalling from other basecallers}, data management with separated raw files and labels, and lastly it was a magic to parse it every time. Which exactly group or subgroup within fast5, or is the signal start normalized to 0, or is it some arbitary begging written at some other place in fast5 files changes from version to version. 
 
-The raw dataset is transformed using my repo, minion-data~\footnote{\url{https://github.com/nmiculinic/minion-data}}. It defines common dataset training structure in the protobuf~\citep{protobuf} interface description language (IDL). The whole definition can be seen in figure~\ref{fg:dataset_proto}.
+Therefore, for this project I've decided to make my own custom format for training described via protobuf~\citep{protobuf}. The issue from previous versions weren't the only reason. Another was ease of importing other peoples data in their formats into this one. If I can read it, I can easily write plugin converting between formats. As of writing this thesis 4 such plugins were written since I wasn't sure which data I shall use and in which format am I going to import them in. 
+
+Ease of machine encoding/decoding as well as other previously mentioned factors guided this decision. Also I've written written datapoint format inspector operating on this common format, making my life easier. The source code for conversion procedures can be found on minion-data~\footnote{\url{https://github.com/nmiculinic/minion-data}} github repository as well as pypi. The specific interface description language(IDL) can se seen in figure~\ref{fg:dataset_proto}.
+
 
 \begin{figure}
     \begin{center}
@@ -351,6 +349,13 @@ message DataPoint {
     \label{fg:dataset_proto}
     \end{center}
 \end{figure}
+
+Data has been downloaded from \url{https://data.genomicsresearch.org/Projects/online_dataset/train_set_all/}.  The following species were provided there by the Chiron team:
+\begin{itemize}
+    \item Human
+    \item E. Coli
+    \item Lambda Phage
+\end{itemize}
 
 For the concrete Chiron dataset, the re-squiggled preparation method was used. (The data was re-squiggled, that is after aligning the read on the reference, the read data is improved and each base pairs place on the raw signal is calculated.)
 
