@@ -190,7 +190,7 @@ ReLU, The rectified linear unit, $f(x) = \max(0, x)$,  is one hugely popular cho
 Furthermore, its calculation is drastically simpler then computing transcendental functions, like $\sigma$ or $\tanh$.
 
 Over time, ReLU showed its downsides, called \textit{dying ReLU}. It still saturates the gradients when it's 0, that is when $x <= 0$ giving no useful gradient to back propagate. Thus several ReLU variant have been proposed: PrRelu~\citep{prelu} in equation~\ref{eq:prelu}, ELU~\citep{elu} in equation~\ref{eq:elu}, and finally SeLU~\citep{selu} in equation~\ref{eq:selu}. In Selu constants $\alpha$ and $\lambda$ are chosen in such a way that output gravitates towards normal distribution with zero mean and unit variance. Those constants are: $\lambda = 1.0507$ and $\alpha = 1.6732$. 
-Code generating the function plot is displayed in figure~\ref{fg:act-code}, and the plot is in figure~\ref{fg:act_plot}
+Code generating the function plot is displayed in figure~\ref{fg:actcode}, and the plot is in figure~\ref{fg:act_plot}
 
 \begin{equation}    
 \label{eq:prelu}
@@ -240,7 +240,7 @@ for act in ["relu","selu", "elu"]:
             plt.plot(xx, yy, label=act)
             plt.legend()
 \end{lstlisting}
-\label{fg:act-code}
+\label{fg:actcode}
 \caption{Code generating the activation function plot. Also shows how tensorflow and keras could be used}
 \end{figure}
 
@@ -250,6 +250,22 @@ for act in ["relu","selu", "elu"]:
         \caption{Plot of common activation functions between -1 and 1. PrELU is excluded since the parameter $\alpha$ is learnt during training}
         \label{fg:act_plot}
     \end{center}
+\end{figure}
+
+\section{CNN}
+Convolutional Neural Networks(CNNs) are the bread and butter of almost all computer vision system today, and they lunched the deep learning hype with unprecedented results on Image Classification problems. 
+Lately, their scope is expanded to Natural language processing (NLP) tasks with promising results~\citep{BYTENET, facebook}.
+
+Convolution is a type of feed-forward neural network layer where the weights are tied together. We have a sliding window over which we apply linear transformation of the input, and get the output element. This operation is repeated to get the full output tensor. For 1D case~\footnote{\url{https://keras.io/layers/convolutional}} figure~\ref{fg:convolution} depicts it visually. 
+
+There's also atrous convolution~\cite{atrous_DBLP:journals/corr/ChenPSA17}, also known as dilated convolution where spaced input tensor elemets are taken depending on the dilation factor. Ordinary convolution is a special case with $\text{dilation} = 1$.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{convolution}
+		\caption{Convolution layer, kernel size 3 with stride 1. Adapted from~\citep{mratkovic} with authors permission.}
+		\label{fg:convolution}
+	\end{center}
 \end{figure}
 
 \section{RNN}
