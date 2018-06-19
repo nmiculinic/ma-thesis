@@ -3,6 +3,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{footnote}
 \usepackage{graphicx}
+\usepackage{mathtools}
 
 \usepackage{listings}
 \usepackage{protobuf/lang}  % include language definition for protobuf
@@ -162,7 +163,87 @@ Chiron~\citep{chiron_teng} is developed by Haotian Teng and others in Lachlan Co
 \label{chap:methods}
 This chapter is dedicated to explaining key deep learning concepts used throughout the master thesis. It's here primarily for completeness, and it's author recommendation to go into detail via other sources, for example Deep learning book~\citep{deep_learning_book-Goodfellow-et-al-2016}, google, or research papers cited for most of the techniques.. TensorFlow~\citep{tensorflow2015-whitepaper} and Keras~\citep{chollet2015keras} deep learning frameworks were used for implementation. For each deep learning concept I'll provide equivalent keras/tensorflow code whichever one is simpler and used throughout the codebase.
 
+\section{Neural Network}
+Feed-forward Neural network is the basic building block of any deep learning system. It's composition of multiple differentiable functions. Commonly we have input vector $x$, apply some linear transformation to it and add bias, and finally on the result some activation function. Details on common choices for actionvation function are in section~\ref{sec:activation}. In mathematical language $y = f(Ax + b)$ would be one layer of neural network transforming input $x$ into output $y$. Stacking those operation we get multiple layers, hence the word deep in deep learning. Simple 3-layer neural network is depicted in figure~\ref{fg:nn}.
 
+\begin{figure}[!ht]
+    \begin{center}
+        \begin{align*}
+            y_1 &= f(A_1x + b_1) \\
+            y_2 &= f(A_2y_1 + b_2) \\
+            y &= f(A_3y_2 + b_3) \\
+        \end{align*}
+        \caption{Simple three layer feed forward neural network}
+        \label{fg:nn}
+    \end{center}
+\end{figure}
+
+\section{Activation functions}
+\label{sec:activation}
+
+Most neural network operations are linear transformation. Composing multiple linear transformation we get new linear transformation. Thus have non-linear behavior we use the non-linear activation functions. Originally, the most popular choice was $\tanh$ and $\sigma(x) = \frac{1}{1 + e^{-x}} $ activation functions. They are nice because of limited output domain. 
+
+However, other choices proved more effective, especially with deep neural network due to greater learning speeds, and to overcome gradient vanishing problem. Gradient vanishing refers to neural network gradient approaching zero as we back propagate through more and more layers. Exploding gradient is related phenomena in which gradient approaches infinity. Both present serious hampering to neural network training.
+
+ReLU, The rectified linear unit, $f(x) = \max(0, x)$,  is one hugely popular choice and decent baseline compared to other ReLU variants. ReLU greatly accelerates the convergence of stochastic gradient descent compared to $\sigma$ and $\tanh$ activation functions~\citep{NIPS2012_4824}. 
+
+Furthermore, its calculation is drastically simpler then computing transcendental functions, like $\sigma$ or $\tanh$.
+
+Over time, ReLU showed its downsides, called \textit{dying ReLU}. It still saturates the gradients when it's 0, that is when $x <= 0$ giving no useful gradient to back propagate. Thus several ReLU variant have been proposed: PrRelu~\citep{prelu} in equation~\ref{eq:prelu}, ELU~\citep{elu} in equation~\ref{eq:elu}, and finally SeLU~\citep{selu} in equation~\ref{eq:selu}. In Selu constants $\alpha$ and $\lambda$ are chosen in such a way that output gravitates towards normal distribution with zero mean and unit variance. Those constants are: $\lambda = 1.0507$ and $\alpha = 1.6732$. 
+
+\begin{equation}    
+\label{eq:prelu}
+PrELU(x)=
+\begin{cases}
+x & \text{if}\ x>0 \\
+\alpha x & \text{otherwise}
+\end{cases}\\
+\end{equation}
+
+\begin{equation}
+\label{eq:elu}
+ELU(x)=
+\begin{cases}
+x & \text{if}\ x>0 \\
+\exp(x) - 1 & \text{otherwise}
+\end{cases}    \\
+\end{equation}
+
+\begin{equation}
+\label{eq:selu}
+\text{selu}(x)= \lambda
+\begin{cases}
+x & \text{if}\ x>0 \\
+\alpha e^x - \alpha & \text{otherwise}
+\end{cases} 
+\end{equation}
+
+Figure \ref{fg:activations} shows different activation functions.
+\begin{figure}[!htb]
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{activations}
+        \caption{Activation functions}
+        \label{fg:activations}
+    \end{center}
+\end{figure}
+\section{RNN}
+RNN, residual neural networks are one of the basic building blocks in sequence models. RNN's to usual feed-forward neural network 
+
+\textit{Recurrent neural networks} can be viewed as a simple feed-forward network with the difference that the current output does not only depend on the current input but previous inputs as well. RNNs store that information in their hidden state which is updated in each step. The figure shows simple RNN and the same RNN unfolded in time.  Unrolling is a way of showing how network processes each input in the sequence and updates its hidden state (show in figure  \ref{fg:rnn}).
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{rnn}
+        \caption{An unrolled recurrent neural network. Adapted from~\citep{mratkovic} with authors permission.}
+        \label{fg:rnn}
+    \end{center}
+\end{figure}
+
+These networks are trained using a variant of backpropagation called backpropagation through time which is essentially the same as classical backpropagation on an unfolded network. The gradient is propagated through the entire recurrence relation, and the gradient is multiplied in each step with the factor, depending on a scale it can make gradient vanish (drop to 0) or exponentially grow each step and explode. Detailed explanation can be found \cite{rnn-blog}. These issues are called the vanishing and exploding gradient and are generally resolved by a variant of RNN called \textit{LSTM} \cite{hochreiter1997long}. 
+
+Bidirectional Recurrent Neural (BiRNN) networks are used when the current output not only depends on the previous elements in the sequence but also future elements. The idea is to combine two RNN (one in the positive direction, one in negative time direction) and have an output of the current state expressed as a function of hidden states of both RNNs and current input. This is the approach used in DeepNano \cite{Boza2017}. 
+
+
+One of the major drawbacks of all recurrent networks is computation time. RNNs operate sequentially as the output for the second step depends on the first step and so on, which makes parallelization capabilities of RNNs quite limited. This especially is the case for Bidirectional RNNs.
 \chapter{System architecture}
 \section{Data Preparation}
 
