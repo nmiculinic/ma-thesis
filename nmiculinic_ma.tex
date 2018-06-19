@@ -190,6 +190,7 @@ ReLU, The rectified linear unit, $f(x) = \max(0, x)$,  is one hugely popular cho
 Furthermore, its calculation is drastically simpler then computing transcendental functions, like $\sigma$ or $\tanh$.
 
 Over time, ReLU showed its downsides, called \textit{dying ReLU}. It still saturates the gradients when it's 0, that is when $x <= 0$ giving no useful gradient to back propagate. Thus several ReLU variant have been proposed: PrRelu~\citep{prelu} in equation~\ref{eq:prelu}, ELU~\citep{elu} in equation~\ref{eq:elu}, and finally SeLU~\citep{selu} in equation~\ref{eq:selu}. In Selu constants $\alpha$ and $\lambda$ are chosen in such a way that output gravitates towards normal distribution with zero mean and unit variance. Those constants are: $\lambda = 1.0507$ and $\alpha = 1.6732$. 
+Code generating the function plot is displayed in figure~\ref{fg:act-code}, and the plot is in figure~\ref{fg:act_plot}
 
 \begin{equation}    
 \label{eq:prelu}
@@ -218,14 +219,39 @@ x & \text{if}\ x>0 \\
 \end{cases} 
 \end{equation}
 
-Figure \ref{fg:activations} shows different activation functions.
-\begin{figure}[!htb]
+\begin{figure}
+\begin{lstlisting}[language=python,style=protobuf]
+import tensorflow as tf
+import keras
+import seaborn as sns
+import numpy as np
+import matplotlib.pyplot as plt
+
+for act in ["relu","selu", "elu"]:
+    with tf.Graph().as_default():
+        x = tf.placeholder(shape=(None, ), dtype=tf.float32)
+        y = keras.layers.Activation(act)(x) 
+
+        with tf.Session() as sess:
+            xx = np.linspace(-1, 1)
+            yy = sess.run(y, feed_dict={
+                x: xx
+            })
+            plt.plot(xx, yy, label=act)
+            plt.legend()
+\end{lstlisting}
+\label{fg:act-code}
+\caption{Code generating the activation function plot. Also shows how tensorflow and keras could be used}
+\end{figure}
+
+\begin{figure}
     \begin{center}
-        \includegraphics[width=0.5\textwidth]{activations}
-        \caption{Activation functions}
-        \label{fg:activations}
+        \includegraphics[width=0.8\textwidth]{act_plot}
+        \caption{Plot of common activation functions between -1 and 1. PrELU is excluded since the parameter $\alpha$ is learnt during training}
+        \label{fg:act_plot}
     \end{center}
 \end{figure}
+
 \section{RNN}
 RNN, residual neural networks are one of the basic building blocks in sequence models. RNN's to usual feed-forward neural network 
 
