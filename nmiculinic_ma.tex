@@ -364,6 +364,16 @@ The re-squiggled basecalled data is located at \verb|/Analyses/RawGenomeCorrecte
 After the gzipped dataset is prepared, it goes into the training pipeline. The whole training \& testing pipeline is available  open source on \url{https://github.com/nmiculinic/minion-basecaller}
 
 \section{Training pipeline}
+After getting data in uniform format, the training part comes next. In aiming this as observable and simple as possible I've used python3 \texttt{typing.NameTuple}~\footnote{\url{TODO}} and volptous for data validation. With those two tools I've created statically typed configuration file format and data validation with human readable error. As serialization format I've chosen YAML for it's readability and tersness.
+
+Input data is read via background thread which processes it, packages it into signal and label slices, and pushed into tensorflow space queues. Inside those queues, data is shuffled, and composed into batched for further training. This part of the code has extensive test suide, including end2end test with golden file~\footnote{golden ftextile is test technique where you save function output to golden file, verify manually it's correct, and after each successing test you're checking that nothing changed. This way we can be sure refactoring didn't influence correctness.}
+
+From configuration rest of the pipeline is initialized. This included model, with its hyperparameters, loading config defined train and test sets, learning rate schedule, sequence lengths, batch size and other settings. Keras is used for model definition due to its simplicity in design. 
+
+Additionally I've embedded edlib [TODO] CITE EDLIB.
+in the tensorflow \texttt{tf.py\_func} operator which enabled me having match, mismatch, insertion, deletion and identiry rates observer during training on both train and test set.
+
+Standard python logging module was used with multiple backends. One backend saved to log file for further inspection. The other one shipped logs to graylog system which I've setup on faculty servers. This system enabled me log searching and greater efficency in finding bugs. 
 \section{Hyperparameter optimization}
 
 \chapter{Results}
@@ -372,7 +382,7 @@ After the gzipped dataset is prepared, it goes into the training pipeline. The w
 \bibliography{literatura}
 \bibliographystyle{unsrtnat}
 % \bibliographystyle{plainnat}
-
+arg
 \begin{abstract}
 In the MinION device, single-stranded DNA fragments move through nanopores, which causes drops in the electric current. The electric current is measured at each pore several thousand times per second. Each event is described by the mean and variance of the current and by event duration. This sequence of events is then translated into a DNA sequence by a base caller. Develop a base-caller for MinION nanopore sequencing platform using a deep learning architecture such as convolutional neural networks and recurrent neural networks. Instead of events, use current waveform at the input. Compare the accuracy with the state-of-the-art basecallers. For testing purposes use publicly, available datasets and Graphmap or Minimap 2 tools for aligning called reads on reference genomes.  Implement method using TensorFlow or similar library. The code should be documented and hosted on a publicly available Github repository.
 
