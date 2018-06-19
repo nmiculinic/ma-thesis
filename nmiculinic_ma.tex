@@ -286,6 +286,22 @@ Common issue to vanilla RNNs is vanishing and exploding gradients problem. It's 
 Bidirectional Recurrent Neural (BiRNN) networks are used when the current output not only depends on the previous elements in the sequence but also future elements. Basically we're stacking to RNNs, one in forward direction and another in the backward and concatenating the hidden states/outputs. This approach was used in DeepNano~\citep{Boza2017}.
 
 Despite their modeling power, main drawback is their speed. Since they are processing data sequentially, it's hard to paralize those operations. 
+
+\section{Pooling layer}
+Pooling layers refer to tensor dimensionality reduction. Tensor is squeezed by some factor, and each block of factor width is aggregated using some aggregation function. 
+In other words, we divide our tensor into equally shaped hyperrectanges, and each aggregate using aggregation function yielding new hyperrectange. 
+Fox example, maxPool2d for  image sized 50x50 shall with pool size (2,2) shall divide it into rectangles of size (2, 2) max those 4 elements and result in image sized 25x25.
+This is visually depicted in figure~\ref{fg:fg:maxpool}.
+Common choices are AvgPool, and MaxPool~\citep{Scherer:2010:EPO:1886436.1886447}~\footnote{\url{https://keras.io/layers/pooling/}}.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Pooling_Simple_max}
+        \caption{Example of max pool layer in convolutional neural network. Adapted from~\url{https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/pooling_layer.html}}
+        \label{fg:maxpool}
+    \end{center}
+\end{figure}
+
 \chapter{System architecture}
 \section{Data Preparation}
 
