@@ -291,7 +291,7 @@ Despite their modeling power, main drawback is their speed. Since they are proce
 Pooling layers refer to tensor dimensionality reduction. Tensor is squeezed by some factor, and each block of factor width is aggregated using some aggregation function. 
 In other words, we divide our tensor into equally shaped hyperrectanges, and each aggregate using aggregation function yielding new hyperrectange. 
 Fox example, maxPool2d for  image sized 50x50 shall with pool size (2,2) shall divide it into rectangles of size (2, 2) max those 4 elements and result in image sized 25x25.
-This is visually depicted in figure~\ref{fg:fg:maxpool}.
+This is visually depicted in figure~\ref{fg:maxpool}.
 Common choices are AvgPool, and MaxPool~\citep{Scherer:2010:EPO:1886436.1886447}~\footnote{\url{https://keras.io/layers/pooling/}}.
 
 \begin{figure}[!ht]
@@ -520,6 +520,36 @@ class HyperParamCfg(NamedTuple):
 [TODO]
 
 \chapter{Results}
+
+% Both consensus and read alignment is calculated. It can be represenet as CIGAR string, that is sequence of matches(\=), mismatches(X), insertions(I) and deletions(D). Additionaly at the beginning and end of the read alignment, soft(S) and hard(H) clips may be present which are removed. Additionally Padding information(P) and Spliced alignment skip cigar(N) is likewise stipped from the analysis. This convetions are taken from SAM file format definitions. At the end, we're left with the following metrics:
+
+% \begin{align}
+%     \text{read_length} &= \#(=) + \#(X) + \#(I) \\ 
+%     \text{match_rate} &= dummy
+% \end{align}
+
+\section{Definitions}
+
+\section{Other solutions}
+On his github repo, Ryan Wick composed multiple basecaller comparasion~\citep{rwick_basecalling_cmp}~\footnote{\url{https://github.com/rrwick/Basecalling-comparison}}. This section briefly summarizes his work and it's recommended to check original authors work, it's quite good! Due to resource contraints both time and compute, I'm unable to run my own testing on  my data, however I can use subset of Ryan Wick's dataset to perform my model evaluation, thus it's somewhat relevant. This summarization is composed of two figures, read identity in figure~\ref{fg:rwick_identity} and consensus identity in figure~\ref{fg:rwick_consensus}. All figures ara pre-polished states.
+
+All definitions defined in previous section are valid.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{rwick_read_identity}
+        \caption{Basecallers read identity as tested by~\citep{rwick_basecalling_cmp}}
+        \label{fg:rwick_identity}
+    \end{center}
+\end{figure} 
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{rwick_assembly_identity}
+        \caption{Basecallers assembly identity as tested by~\citep{rwick_basecalling_cmp}}
+        \label{fg:rwick_consensus}
+    \end{center}
+\end{figure} 
 
 \chapter{Conclusion}
 
