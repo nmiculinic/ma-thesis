@@ -521,11 +521,12 @@ class HyperParamCfg(NamedTuple):
 
 \chapter{Results}
 
-% Both consensus and read alignment is calculated. It can be represenet as CIGAR string, that is sequence of matches(\=), mismatches(X), insertions(I) and deletions(D). Additionaly at the beginning and end of the read alignment, soft(S) and hard(H) clips may be present which are removed. Additionally Padding information(P) and Spliced alignment skip cigar(N) is likewise stipped from the analysis. This convetions are taken from SAM file format definitions. At the end, we're left with the following metrics:
+ Both consensus and read alignment is calculated. It can be represenet as CIGAR string, that is sequence of matches(=), mismatches(X), insertions(I) and deletions(D). Additionaly at the beginning and end of the read alignment, soft(S) and hard(H) clips may be present which are removed. Additionally Padding information(P) and Spliced alignment skip cigar(N) is likewise stipped from the analysis. This convetions are taken from SAM file format definitions. At the end, we're left with the following metrics:
 
 % \begin{align}
-%     \text{read_length} &= \#(=) + \#(X) + \#(I) \\ 
-%     \text{match_rate} &= dummy
+%  \text{read_length} &= \#(=) + \#(X) + \#(I) \\ 
+%  \text{match_rate} &= dummy
+% a &= b
 % \end{align}
 
 \section{Definitions}
