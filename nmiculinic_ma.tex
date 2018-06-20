@@ -478,6 +478,43 @@ nmiculinic/mincall:latest-py-gpu train --config /model/config.yml
 
 \section{Hyperparameter optimization}
 
+Our models have various hyperparameters. For example, learning rate, receptive width size, number of blocks, etc. To gain a better model we're not only optimizing models parameters, but also hyperparameters on the validation set. For this I've implemented hyperparam search capabilities in the programming solution. 
+
+The design rationally do as little things as possible. It takes the training configuration with injected hyperparams, and it creates new directory and \texttt{config.yml} for each new hyperparam assigement. Then it releases control to the training code part, as if we had run training on the command like previously described in figure~\ref{fg:train_cfg_sh} making this maximally observable. After the training completes it reports back to the hyperparam controller the results and acording to backing hyperparameter optimization procedure new assigment is calculated.
+
+[TODO] -- assigement procedures.
+
+It's config is similar to the traning and its NamedTuple definition can be seen in figure~\ref{fg:hyper_cfg_py}. The param is flexible entry; it can be a single scalar value, and then it's not hyperoptimized, or it can be dictionary with \texttt{type} field and other fields depending on the parameter types, e.g. int, float, categorical, etc. Example YAML hyperparameter config is in figure~\ 
+
+\begin{figure}
+    \begin{center}
+    \begin{lstlisting}[language=python,style=protobuf]
+class HyperParamCfg(NamedTuple):
+    model_name: str
+    train_data: List[DataDir]
+    test_data: List[DataDir]
+    seq_length: Param
+    batch_size: Param
+    surrogate_base_pair: Param
+
+    train_steps: Param
+    init_learning_rate: Param
+    lr_decay_steps: Param
+    lr_decay_rate: Param
+
+    model_hparams: Dict[str, Param]
+
+    work_dir: str
+    grad_clipping: float = 10.0
+    validate_every: int = 50
+    run_trace_every: int = 5000
+    save_every: int = 2000
+    \end{lstlisting}
+    \caption{HyperParameter options description}
+    \label{fg:hyper_cfg_py}
+    \end{center}
+\end{figure}
+
 \chapter{Results}
 \chapter{Conclusion}
 
