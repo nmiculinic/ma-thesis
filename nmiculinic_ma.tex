@@ -520,16 +520,35 @@ class HyperParamCfg(NamedTuple):
 [TODO]
 
 \chapter{Results}
-
- Both consensus and read alignment is calculated. It can be represenet as CIGAR string, that is sequence of matches(=), mismatches(X), insertions(I) and deletions(D). Additionaly at the beginning and end of the read alignment, soft(S) and hard(H) clips may be present which are removed. Additionally Padding information(P) and Spliced alignment skip cigar(N) is likewise stipped from the analysis. This convetions are taken from SAM file format definitions. At the end, we're left with the following metrics:
-
-% \begin{align}
-%  \text{read_length} &= \#(=) + \#(X) + \#(I) \\ 
-%  \text{match_rate} &= dummy
-% a &= b
-% \end{align}
-
 \section{Definitions}
+We're measuring two things. Each read is aligned to the reference genome and multiple metrics are measured, defined at the end of this section in figure~\ref{fg:metrics}. However, the reads don't tell the whole picture since we're interested in the final product, consensus assembly of reads. The reads could have systemic bias in the same regions and suffer from same errors which would yield subpar consensus versus reads correcting each other and yielding better consensus accuracy than any read on their own.
+
+Consensus is generated from pileup using simple algorithm. We simply align all the reads to the genome, stack them on top of each other forming pileup of read bases. Bases are called using majority vote. Deletions are handled if there's majority call for deletion, and for insertion there has to be majority length and the bases of insertion. 
+
+In figure~\ref{fg:consensus} shows how consensus is called from pileup created from aligned reads. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{consnesus}
+		\caption{Consensus from pileup. Adapted from~\citep{mratkovic}}
+		\label{fg:consensus}
+	\end{center}
+\end{figure}
+
+After both consensus and read alignment is calculated, we can represent the sequence alighnemt with CIGAR string, that is sequence of matches(=), mismatches(X), insertions(I) and deletions(D). Additionaly at the beginning and end of the read alignment, soft(S) and hard(H) clips may be present which are removed. Additionally padding information(P) and spliced alignment skip cigar(N) is likewise stipped from the analysis. This convetions are taken from SAM file format definitions. At the end, we're left with the following metrics as defined in figure~\ref{fg:metrics}.
+
+\begin{figure}
+\begin{align*}
+ \text{read\_length} &= \#(=) + \#(X) + \#(I) \\ 
+ \text{match\_rate} &= \frac{\#(=)}{\text{read\_length}} \\
+ \text{mismatch\_rate} &= \frac{\#(X)}{\text{read\_length}} \\
+ \text{insertion\_rate} &= \frac{\#(I)}{\text{read\_length}} \\
+ \text{deletion\_rate} &= \frac{\#(D)}{\text{read\_length}} \\
+ \text{identity\_rate} &= \frac{\#(=)}{\#(=) + \#(X) +\#(I) + \#(D)}  
+\end{align*}
+\label{fg:metrics}
+\caption{Various perfomance measurement metrics as defined throughout this thesis.}
+\end{figure}
 
 \section{Other solutions}
 On his github repo, Ryan Wick composed multiple basecaller comparasion~\citep{rwick_basecalling_cmp}~\footnote{\url{https://github.com/rrwick/Basecalling-comparison}}. This section briefly summarizes his work and it's recommended to check original authors work, it's quite good! Due to resource contraints both time and compute, I'm unable to run my own testing on  my data, however I can use subset of Ryan Wick's dataset to perform my model evaluation, thus it's somewhat relevant. This summarization is composed of two figures, read identity in figure~\ref{fg:rwick_identity} and consensus identity in figure~\ref{fg:rwick_consensus}. All figures ara pre-polished states.
@@ -551,6 +570,9 @@ All definitions defined in previous section are valid.
         \label{fg:rwick_consensus}
     \end{center}
 \end{figure} 
+
+\section{Mincall}
+[TODO] Show some results.
 
 \chapter{Conclusion}
 
