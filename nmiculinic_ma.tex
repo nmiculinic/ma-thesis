@@ -350,6 +350,21 @@ message DataPoint {
     \end{center}
 \end{figure}
 
+\subsection{Data correction}
+Each data point has been previously basecalled, and some resulting sequence was obtained. Then each sequence was corrected by aligning to the reference genome. By aligning to the reference we get the reference genome region and the CIGAR strings describing the alignment. The CIGAR string is list ordered sequence of insertions(I), deletions(D), matches(=) and mismatches(X). Insertions are bases present in the query string, but absent from reference, and deletions are the opposite. 
+
+Example alignment is depicted in figure~\ref{fg:align}. We take the error corrected labels and place them in dataset protobuf file for further training processing.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.6\textwidth]{alignment}
+        \caption{Example of simple alignment and CIGAR string. Adapted from~\citep{mratkovic}}
+        \label{fg:align}
+    \end{center}
+\end{figure} 
+
+\subsection{Data sources}
+
 Data has been downloaded from \url{https://data.genomicsresearch.org/Projects/online_dataset/train_set_all/}.  The following species were provided there by the Chiron team:
 \begin{itemize}
     \item Human
