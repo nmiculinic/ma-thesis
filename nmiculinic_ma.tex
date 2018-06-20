@@ -442,8 +442,7 @@ Input data is read via background thread which processes it, packages it into si
 
 From configuration rest of the pipeline is initialized. This included model, with its hyperparameters, loading config defined train and test sets, learning rate schedule, sequence lengths, batch size and other settings. Keras is used for model definition due to its simplicity in design. 
 
-Additionally I've embedded edlib [TODO] CITE EDLIB.
-in the tensorflow \texttt{tf.py\_func} operator which enabled me having match, mismatch, insertion, deletion and identiry rates observer during training on both train and test set.
+Additionally I've embedded edlib~\citep{edlib} in the tensorflow's \texttt{tf.py\_func} operator which enabled me having match, mismatch, insertion, deletion and identiry rates observer during training on both train and test set.
 
 Standard python logging module was used with multiple backends. One backend saved to log file for further inspection. The other one shipped logs to graylog system which I've setup on faculty servers. This system enabled me log searching and greater efficency in finding bugs. 
 
