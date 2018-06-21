@@ -294,6 +294,24 @@ Fox example, maxPool2d for  image sized 50x50 shall with pool size (2,2) shall d
 This is visually depicted in figure~\ref{fg:maxpool}.
 Common choices are AvgPool, and MaxPool~\citep{Scherer:2010:EPO:1886436.1886447}~\footnote{\url{https://keras.io/layers/pooling/}}.
 
+\section{CTC loss}
+\label{sec:ctc_loss}
+[TODO]
+
+\section{Autoencoder}
+\label{sec:autoencoder}
+[TODO]
+
+\section{Multi task training}
+Multi-task learning~\footnote{\url{http://ruder.io/multi-task/}}~\citep{multi-task-learning,Caruana1997,DBLP:journals/corr/abs-1106-0245} is approach where we're optimizing multiple tasks on the same dataset. 
+It has been shown it may lead to better performance then learning specific model for each task. 
+So far it has been successfully applied in many domains, including natural language processing~\citep{Collobert:2008:UAN:1390156.1390177}, speech recognition~\citep{speech_multitask}, computer vision~\citep{cv-multitask}, drug discovery~\citep{ramsundar2015massively} and many other areas. 
+
+In the context of MinION basecalling, I'm combining two tasks. 
+The first one is basecalling the sequence, that is deriving appropriate logits which shall minimize CTC loss defined in section~\ref{sec:ctc_loss}, and autoencoded original reconstruction from said logits using \texttt{L2} loss for distance measurement~\footnote{Maybe it would be better using dynamic time warping distance measurement, however due to technical requirements of implementing in tensorflow the author chose the simpler option. This would be future work section} between signals. 
+
+The idea is this additional loss helps models learn better logits by training on not only one but two tasks. In chapter~\ref{chap:results} you can see the detailed analysis of this approach.
+
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[width=0.8\textwidth]{Pooling_Simple_max}
@@ -301,6 +319,14 @@ Common choices are AvgPool, and MaxPool~\citep{Scherer:2010:EPO:1886436.1886447}
         \label{fg:maxpool}
     \end{center}
 \end{figure}
+
+%%  ######  ##    ##  ######  ######## ######## ##     ##    ###    ########  ##     ## #### ######## ########  ######  ######## ##     ## ########  ######## 
+%% ##    ##  ##  ##  ##    ##    ##    ##       ###   ###   ## ##   ##     ## ##     ##  ##     ##    ##       ##    ##    ##    ##     ## ##     ## ##       
+%% ##         ####   ##          ##    ##       #### ####  ##   ##  ##     ## ##     ##  ##     ##    ##       ##          ##    ##     ## ##     ## ##       
+%%  ######     ##     ######     ##    ######   ## ### ## ##     ## ########  #########  ##     ##    ######   ##          ##    ##     ## ########  ######   
+%%       ##    ##          ##    ##    ##       ##     ## ######### ##   ##   ##     ##  ##     ##    ##       ##          ##    ##     ## ##   ##   ##       
+%% ##    ##    ##    ##    ##    ##    ##       ##     ## ##     ## ##    ##  ##     ##  ##     ##    ##       ##    ##    ##    ##     ## ##    ##  ##       
+%%  ######     ##     ######     ##    ######## ##     ## ##     ## ##     ## ##     ## ####    ##    ########  ######     ##     #######  ##     ## ######## 
 
 \chapter{System architecture}
 \section{Data Preparation}
@@ -520,6 +546,8 @@ class HyperParamCfg(NamedTuple):
 [TODO]
 
 \chapter{Results}
+\label{chap:results}
+
 \section{Definitions}
 We're measuring two things. Each read is aligned to the reference genome and multiple metrics are measured, defined at the end of this section in figure~\ref{fg:metrics}. However, the reads don't tell the whole picture since we're interested in the final product, consensus assembly of reads. The reads could have systemic bias in the same regions and suffer from same errors which would yield subpar consensus versus reads correcting each other and yielding better consensus accuracy than any read on their own.
 
