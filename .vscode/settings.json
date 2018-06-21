@@ -3,8 +3,11 @@
         "Coli",
         "Illumina",
         "Nanopore",
+        "autoencoder",
+        "autoencoders",
         "basecalling",
         "convolutional",
+        "denoising",
         "fasta",
         "nucleotides"
     ],

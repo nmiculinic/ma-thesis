@@ -298,9 +298,13 @@ Common choices are AvgPool, and MaxPool~\citep{Scherer:2010:EPO:1886436.1886447}
 \label{sec:ctc_loss}
 [TODO]
 
+\section{Beam search}
+\label{sec:beam-search}
+[TODO]
+
 \section{Autoencoder}
 \label{sec:autoencoder}
-[TODO]
+Autoencoders are type of neural network where the output target is the input target~\footnote{Unless we're talking about denoising autoencoder for which the input has additional noise}. They funnel the data though smaller and smaller layers until we're reaching the neural network bottleneck -- a thought vector as Geoffrey Hinton calls it.  From there multiple layers are stacked on top of each other until we get the input back. In it's basic for they're quite simple, input $x$, output $y$ and loss some loss function which measures similarity between $x$ and $y$. Variations include denoising autoencoder~\citep{vincent2008extracting}, variational autoencoder (VAE)~\citep{kingma2013auto}, U-net~\citep{DBLP:journals/corr/RonnebergerFB15} and many others. 
 
 \section{Multi task training}
 Multi-task learning~\footnote{\url{http://ruder.io/multi-task/}}~\citep{multi-task-learning,Caruana1997,DBLP:journals/corr/abs-1106-0245} is approach where we're optimizing multiple tasks on the same dataset. 
