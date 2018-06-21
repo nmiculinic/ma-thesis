@@ -296,11 +296,72 @@ Common choices are AvgPool, and MaxPool~\citep{Scherer:2010:EPO:1886436.1886447}
 
 \section{CTC loss}
 \label{sec:ctc_loss}
-[TODO]
 
-\section{Beam search}
-\label{sec:beam-search}
-[TODO]
+How do you measure how much are two sequences similar in diferentiable manner? If we were using classing encoder/decoder architecture with RNN's there's only one way to output the target sequence, and we'd optimize our RNN's outputs logits to match the target 1-hot encoded vector. 
+
+However, in this architecture we're outputing logits whose size depend only on the input signal size. First, let's start with some alphabet, $\Sigma = \{A, G, T, C\}$ of the output symbols we're using.  
+Let's say the target sequence is \texttt{AAG} and we're having 5 logits due to input signal constraints. 
+Logits have shape $[\text{sequence length}, \text{num classes}]$. 
+What is the ideal logit values to get this target sequence to the output?. 
+First we must define how the sequence is decoded. 
+The logit sequence is decoded by finding most likely path through the logits at each time step $t$. Our logits can be represented as on figure~\ref{fg:ctc_graph_0}.
+But we're presented with a problem, if we pick path \texttt{AAAAG} how do we finally decode this sequence as target \texttt{AAG}? The solution proposed in original paper for Connectionist Temporal Classification(CTC)~\citep{Graves:2006:CTC:1143844.1143891, ctc-blog} is indeed brilliant. 
+We introduce a special gap symbol, $-$. 
+That way our logits can output \texttt{A-A-G} which shall decode in the target sequence.
+But what about \texttt{AA--G}? How is this decoded when there are consecutive repeated classes in the most probably path. 
+Decoding depends on which CTC variant we used during training. There's option to \texttt{merge\_repeated}, that is decode \texttt{AAA-G} as \texttt{AG}, or if it's false decode it as \texttt{AAAG} by simply dropping the blanks. 
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{ctc_graph_1}
+        \caption{Depiction of CTC decoding. At each time step we're picking one class, and the probability of this path is the product of probabilities at each time step for that class. Equivalently, in log domain it's the sum of log probabilities, that is logits. Adapted from~\citep{mratkovic}}
+        \label{fg:ctc_graph_0}
+    \end{center}
+\end{figure}
+
+Now, let's get back to the original problem. What's the probability our sequnce is \texttt{AAG} under those logits. 
+The solution is summing probabilities for all paths which decode into target sequence. 
+Or in mathematical language, we define function decoded as out decoding procedure. 
+Path probability is product of probabilities per time step in the path, as in equation~\ref{eq:ctc_path_prob}.
+Example can be seen in equation~\ref{eq:multiple}. 
+Then the probability of our text being equal \texttt{AAG} is given by equation~\ref{eq:ctc_prob}.
+This is a procedure we can optimize with usual MLE~\footnote{maximum likelihood estimator}, the common loss in machine learning area.
+
+\begin{equation}
+\begin{gathered}
+\label{eq:ctc_path_prob}
+P(\pi | X) = \prod_{t=1}^{m} o_t(\pi_t), \\
+\text{where $o_t(\pi_t)$ is probability of element $\pi_t$ being $t^{th}$ element on path $\pi$}
+\end{gathered}
+\end{equation}
+
+\begin{equation}
+\begin{gathered}
+\label{eq:multiple}
+AAG = \begin{cases}
+decode(A, -, A, -, G) \\
+decode(A, A, - -, G) \\
+\vdots \\
+decode(A, -, -, A, G) 
+\end{cases}
+\end{gathered}
+\end{equation}
+
+\begin{equation}
+\begin{gathered}
+\label{eq:ctc_prob}
+P(y = \text{AAG}| \text{logits}) = \sum_{\pi \in decode^{-1}(\text{AAG})} P(\pi | \text{logits})
+\end{gathered}
+\end{equation}
+
+\subsection{Beam search decoding}
+\label{subsec:beam-search}
+
+All is fine and dandy during training, but during inference we're left with computationally intensive problem. Enumerating all paths lead to exponential complexity, a things we'd like to avoid. Even smart dynamic programming solutions shall use more resources then feasible for any non-trivial length sequence. 
+
+To battle this problem we have 2 solutions. First is using greedy approach, and find path such that we're picking the most probably class at each time step, and composing path out of it.
+
+Better approximation, however is between those two extremes. Beam search decoding~\cite{graves_decode}. At each time step, we're only looking at top $N$ paths up until this point. Parameter $N$ is called beam width. From time $t$ to $t+1$ we have dynamic programming transitions, where we look at all possible path continuations, and keep only the best $N$ ones until reached the end. Then we output the best one as our decoded path, apply post processing (merge repeated if configure in that mode, drop blanks) and we're done.
 
 \section{Autoencoder}
 \label{sec:autoencoder}
