@@ -609,6 +609,43 @@ class HyperParamCfg(NamedTuple):
 \subsection{Basecalling}
 \label{subsec:basecalling}
 
+Basecalling is perfomed using either beam search decoder explained in subsection~\ref{subsec:beam-search} or greedy search 
+decoding~\footnote{It's similar to beam search with beam width 1, that is we greedily take the most likely symbol at each time step}.
+
+However, it's often unfeaseable passing whole signal through the GPU and the model. 
+Then we divide the signal into overlapping stripes, calculate logits from each stipes and assembly the final read. 
+
+There's two possible strategies. We can combine the stripes in the logits space, and perform beam search/greedy search on them, 
+or we first perform beam search/greedy search on them and combine the stripes in the read space. 
+
+I've opted out for the former option. 
+Combining them in logits space is pretty simple pattern -- by overlaying stripes in revesed order.
+There's one caveat here, combining in logit space works best when the model is history independent, e.g.
+using only CNN layers without RNN layers which have hidden state. I have a hunch it should word alright 
+with RNN's too but I haven't tested it.
+
+Picture is worth a thousand words, and this process is depicted in figure~\ref{fg:logit_comp}
+
+\begin{figure}
+\label{fg:logit_comp}
+\begin{center}
+\begin{verbatim}
+1111111122223333
+11111111........
+....22222222....
+........33333333
+\end{verbatim}
+\caption{Process of overlapping stripes in logit space. Number signal from which stripe the logit information comes and at the top composite logit is assembled.}
+\end{center}
+\end{figure}
+
+Altrenative approach is used in Chiron~\citep{chiron_teng} where they first decode each stripe, then assemble them. 
+The assembly process works by overlapping consecutive stripes, thus getting relative offset, then using consensus on each output position.
+This approach requires greater deal of overlap between stripes, unlike in logit space, which leads to slower basecalling.
+They also use RNN's, which naturally have a porformance length limit. 
+Their sequence length is around 300, and relative signal offset around 30, 
+while in mincall sequence lengths is around 100k with offsets around 90k.
+
 \subsection{Final model arhitecture}
 \label{subsec:final-model-architecture}
 
