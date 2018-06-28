@@ -1,0 +1,4 @@
+                 Error %    Match %  Mismatch %  Insertion %  Deletion %  Identity %  Read length
+basecaller                                                                                       
+alignment_b0   32.585652  85.364048    9.794374     4.841578   17.949700   72.086729  4465.777778
+alignment_b50  30.242361  85.607736    9.614377     4.777887   15.850097   73.422217  4556.555556

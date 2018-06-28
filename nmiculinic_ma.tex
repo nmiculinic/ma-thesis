@@ -12,7 +12,7 @@
 
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
-\graphicspath{ {./figures/} }
+\graphicspath{{./figures/}{./fig_gen/}}
 
 \begin{document}
 
@@ -34,7 +34,6 @@ In the end, honorable mentions go to Marko Ratković for his help with this thes
 
 \tableofcontents
 \listoffigures
-\listoftables
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Chapter Introduction
@@ -729,7 +728,57 @@ All definitions defined in previous section are valid.
 \end{figure} 
 
 \section{Mincall}
-[TODO] Show some results.
+
+All previously mentioned metrics are displayed here. In figure~\ref{fg:identity_rate} is this solution compared to other basecallers on dataset proposed by~\citep{rwick_basecalling_cmp}.
+Figure~\ref{fg:tbp:all_metrics} provides mean per read statistics for all previously defined metrics. 
+For mincall, I've also calculated distribution of each CIGAR operation (I, D, X, and =) over the relative reads length in figure~\ref{fg:fg:error_distribution}.
+Figure~\ref{fg:concensus_report} reports various consensus related metrics once all reads are assembled together.
+Finally I compare basecalling speeds between greedy search, and beam search with beam width of 50 in figure~\ref{fg:basecaller_speed}. 
+Here it's clearly visible how much of bottleneck beam search is.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{read_violin_Identity}
+        \caption{Basecallers read identity. All non-mincall ones are taken from~\cite{rwick_basecalling_cmp}}
+        \label{fg:identity_rate}
+    \end{center}
+\end{figure}
+
+\begin{figure}
+\label{fg:tbp:all_metrics}
+\input{./fig_gen/error_rates.tex}
+\caption{Mean read metrics across basecallers. All non-mincall ones are taken from~\cite{rwick_basecalling_cmp}}
+\end{figure}
+
+\begin{figure}
+    \label{fg:error_distribution}
+    \begin{center}
+        \includegraphics[width=\textwidth]{alignment_b0_position_report.png}
+        \caption{CIGAR string distribution over the relative read position}
+    \end{center}
+\end{figure}
+
+\begin{figure}
+\label{fg:concensus_report}
+\input{./fig_gen/all_consensus_report.tex}
+\caption{Consensus report among the tested basecallers. All non-mincall ones are taken from~\cite{rwick_basecalling_cmp}}
+\end{figure}
+
+\begin{figure}
+\label{fg:basecaller_speed}
+\begin{tabular}{lrrr}
+\toprule
+{}                          &    Speed(bp/s) \\
+decoding strategy           &                \\
+\midrule
+greedy search               &  32.585652     \\
+beam search (beam width 50) &  30.242361     \\
+\bottomrule
+\end{tabular}
+\caption{Basecaller speed depending on logit decoding strategy. All Tests were using Titan Xp GPU for logits and CPU for decoding on 32 core Intel Xeon E5-2640 @2Ghz}
+\end{figure}
+
+
 
 \chapter{Discourse}
 \label{chap:discoure}
