@@ -649,7 +649,22 @@ while in mincall sequence lengths is around 100k with offsets around 90k.
 \subsection{Final model arhitecture}
 \label{subsec:final-model-architecture}
 
-[TODO]
+Final model has residual layer arhitecture, with Gated residual layer residual blocks~\citep{resnet,DBLP:journals/corr/Savarese16}. 
+It's composed of stacked blocker intertwined with max pooling layers.
+Each block is composed of multiple residual layers. 
+Whole composition is visually depicted in figure~\ref{fg:final_arch}.
+For the best mode, \texttt{num\_blocks} is 2 and \texttt{num\_layers} is [TODO].
+In the backward pass, in an autoencoder stage, we take the logits and use the same arhitecture with maxPools replaced with Upsampling1D layers.
+Combined loss is calculated as $\text{total loss} = \text{autoenc\_coeff} * \text{autoencoder L2 loss} + \text{ctc loss}$.
+During the hyperparemeter serach the best possible \texttt{autoenc\_coeff} is 0.  [TODO]
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{final_arch}
+		\caption{Final arhitecture overview}
+		\label{fg:final_arch}
+	\end{center}
+\end{figure}
 
 \chapter{Results}
 \label{chap:results}
