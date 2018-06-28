@@ -47,7 +47,12 @@ Oxford Nanopore Technology's MinION nanopore sequencing platform~\cite{mikheyev2
 Although MinION is able to produce long reads, even up to 882 kb~\cite{loman1-100k,loman2-800k}, they have an error rate of 10\% or higher. This master thesis uses R9.4 pore model and compares previous techniques with novel auto-encoder multi-task training. 
 
 \section{Organization}
-[TODO]: Write some fancy stuff once completed.
+Chapter~\ref{chap:background} covers the sequencing technologies basics, Oxford nanopore technologies(ONT) sequencing model, and available solutions to MinION sequencing. 
+Chapter~\ref{chap:methods} covers common concepts, most from deep learning, used throughout this thesis. 
+Chapter~\ref{chap:system_arhitecture} covers the whole system architecture and important programming system parts. 
+Chapter~\ref{chap:results} goes into result analysis from the experiments.
+Chapter~\ref{chap:discoure} reflects on the overall problem, and voices author's opinion on related topics.
+Finally, in chapter~\ref{chap:conslusion} this thesis final words are uttered in closing statement. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Chapter Background
@@ -394,6 +399,7 @@ The idea is this additional loss helps models learn better logits by training on
 %%  ######     ##     ######     ##    ######## ##     ## ##     ## ##     ## ##     ## ####    ##    ########  ######     ##     #######  ##     ## ######## 
 
 \chapter{System architecture}
+\label{chap:system_arhitecture}
 \section{Data Preparation}
 \label{sec:data_preparation}
 In previous project incarnation, we used fast5 with additional custom .ref files as our dataset. This setup had some issues. First, it was IO heavy since we were reading the whole fast5 file which contained non-raw data section~\footnote{like basecalling from other basecallers}, data management with separated raw files and labels, and lastly it was a magic to parse it every time. Which exactly group or subgroup within fast5, or is the signal start normalized to 0, or is it some arbitary begging written at some other place in fast5 files changes from version to version. 
@@ -725,6 +731,7 @@ All definitions defined in previous section are valid.
 [TODO] Show some results.
 
 \chapter{Discourse}
+\label{chap:discoure}
 During the development of the mincall I've noticed a couple of things. 
 First, as all the models are closely matched in their metrics, I suspect we've reached Bayesian error rate. 
 Or we need radically different approach to get further few \% improvements. 
@@ -741,6 +748,7 @@ It would be beneficial gathering dataset in some standardized format with qualit
 I've proposed the protobuf format and described it in section~\ref{sec:sec:data_preparation}. 
 Many other fields have their own Common Task Framework (CTF) benchmark, e.g. ImageNet, Cifar, etc. 
 \chapter{Conclusion}
+\label{chap:conslusion}
 
 [TODO] Write something smart here depending on the results. 
 
