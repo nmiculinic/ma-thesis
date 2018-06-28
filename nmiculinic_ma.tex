@@ -573,9 +573,10 @@ Our models have various hyperparameters. For example, learning rate, receptive w
 
 The design rationally do as little things as possible. It takes the training configuration with injected hyperparams, and it creates new directory and \texttt{config.yml} for each new hyperparam assigement. Then it releases control to the training code part, as if we had run training on the command like previously described in figure~\ref{fg:train_cfg_sh} making this maximally observable. After the training completes it reports back to the hyperparam controller the results and acording to backing hyperparameter optimization procedure new assigment is calculated.
 
-[TODO] -- assigement procedures.
+There are two conrete hyperoptimization strategies implemented. One is random serach, and other is sigopt~\footnote{\url{https://sigopt.com}}. 
+I've primarily used sigopt as the main hyperoptimization strategy.
 
-It's config is similar to the traning and its NamedTuple definition can be seen in figure~\ref{fg:hyper_cfg_py}. The param is flexible entry; it can be a single scalar value, and then it's not hyperoptimized, or it can be dictionary with \texttt{type} field and other fields depending on the parameter types, e.g. int, float, categorical, etc. Example YAML hyperparameter config is in figure~\ 
+It's config is similar to the traning and its NamedTuple definition can be seen in figure~\ref{fg:hyper_cfg_py}. The param is flexible entry; it can be a single scalar value, and then it's not hyperoptimized, or it can be dictionary with \texttt{type} field and other fields depending on the parameter types, e.g. int, float, categorical, etc. 
 
 \begin{figure}
     \begin{center}
