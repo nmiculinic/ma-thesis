@@ -1,0 +1,14 @@
+                        alignment_b0  alignment_b50
+coverage_threshold          0.000000       0.000000
+snp_count                3558.000000    3607.000000
+insertion_count          1532.000000    1536.000000
+deletion_count           4841.000000    4431.000000
+num_undercovered_bases      0.000000       0.000000
+num_called_bases        38131.000000   38888.000000
+num_correct_bases       33041.000000   33745.000000
+average_coverage            0.893800       0.912106
+snp_rate                    9.330991       9.275355
+insertion_rate              4.017728       3.949805
+deletion_rate              12.695707      11.394260
+correct_rate               86.651281      86.774841
+identity_percentage         0.711837       0.727004

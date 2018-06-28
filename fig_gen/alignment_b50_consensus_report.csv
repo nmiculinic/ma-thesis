@@ -1,0 +1,14 @@
+,alignment_b50
+coverage_threshold,0.0
+snp_count,3607.0
+insertion_count,1536.0
+deletion_count,4431.0
+num_undercovered_bases,0.0
+num_called_bases,38888.0
+num_correct_bases,33745.0
+average_coverage,0.9121064814814814
+snp_rate,9.275354865254062
+insertion_rate,3.9498045669615305
+deletion_rate,11.394260440238634
+correct_rate,86.77484056778441
+identity_percentage,0.7270040925084431
