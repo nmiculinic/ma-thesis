@@ -731,6 +731,7 @@ Since the problem is quite simple without long term dependancies, I'd guess Baye
 
 For further speed improvements, Beam Search implementation is the bottleneck. 
 Usually it's not used on long reads, and therefore it wasn't as optimized in tensorflow as it could have been since there was no need. 
+While monitoring the basecalling process with \texttt{htop} utility I've noticed poor CPU utilization, that is for 10 parallel beam searches I'd expect 10 CPU's having 100\% utilization, but that wasn't the case indicating subpar performance.
 This fate befalls all using beam search as their primary decoding mechanism, including Chiron~\citep{chiron_teng} and other projects. 
 What Albacore uses underneath the hood isn't certain and I cannot comment on that. 
 
