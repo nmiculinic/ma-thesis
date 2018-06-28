@@ -395,7 +395,7 @@ The idea is this additional loss helps models learn better logits by training on
 
 \chapter{System architecture}
 \section{Data Preparation}
-
+\label{sec:data_preparation}
 In previous project incarnation, we used fast5 with additional custom .ref files as our dataset. This setup had some issues. First, it was IO heavy since we were reading the whole fast5 file which contained non-raw data section~\footnote{like basecalling from other basecallers}, data management with separated raw files and labels, and lastly it was a magic to parse it every time. Which exactly group or subgroup within fast5, or is the signal start normalized to 0, or is it some arbitary begging written at some other place in fast5 files changes from version to version. 
 
 Therefore, for this project I've decided to make my own custom format for training described via protobuf~\citep{protobuf}. The issue from previous versions weren't the only reason. Another was ease of importing other peoples data in their formats into this one. If I can read it, I can easily write plugin converting between formats. As of writing this thesis 4 such plugins were written since I wasn't sure which data I shall use and in which format am I going to import them in. 
@@ -723,6 +723,21 @@ All definitions defined in previous section are valid.
 \section{Mincall}
 [TODO] Show some results.
 
+\chapter{Discourse}
+During the development of the mincall I've noticed a couple of things. 
+First, as all the models are closely matched in their metrics, I suspect we've reached Bayesian error rate. 
+Or we need radically different approach to get further few \% improvements. 
+Since the problem is quite simple without long term dependancies, I'd guess Bayesian error rate is more likely reason.
+
+For further speed improvements, Beam Search implementation is the bottleneck. 
+Usually it's not used on long reads, and therefore it wasn't as optimized in tensorflow as it could have been since there was no need. 
+This fate befalls all using beam search as their primary decoding mechanism, including Chiron~\citep{chiron_teng} and other projects. 
+What Albacore uses underneath the hood isn't certain and I cannot comment on that. 
+
+Most of the training is done on E. Coli, and lately this set is expanded to human genome and few other species. 
+It would be beneficial gathering dataset in some standardized format with quality control. 
+I've proposed the protobuf format and described it in section~\ref{sec:sec:data_preparation}. 
+Many other fields have their own Common Task Framework (CTF) benchmark, e.g. ImageNet, Cifar, etc. 
 \chapter{Conclusion}
 
 [TODO] Write something smart here depending on the results. 
