@@ -1,4 +1,5 @@
-                 Error %    Match %  Mismatch %  Insertion %  Deletion %  Identity %  Read length
-basecaller                                                                                       
-alignment_b0   32.585652  85.364048    9.794374     4.841578   17.949700   72.086729  4465.777778
-alignment_b50  30.242361  85.607736    9.614377     4.777887   15.850097   73.422217  4556.555556
+                         Error %    Match %  Mismatch %  Insertion %  Deletion %  Identity %   Read length
+basecaller                                                                                                
+albacore_v2.2.7.fastq  14.623744  90.164753    4.668960     5.166287    4.788497   85.107055  21176.881570
+chiron_v0.3.fastq      15.853857  88.699263    5.306113     5.994623    4.553120   83.880875  21342.022159
+mincall_b0             26.071517  85.939433    7.996294     6.064274   12.010950   75.979653  19947.572637
