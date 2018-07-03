@@ -1,14 +1,14 @@
-                        alignment_b0  alignment_b50
-coverage_threshold          0.000000       0.000000
-snp_count                3558.000000    3607.000000
-insertion_count          1532.000000    1536.000000
-deletion_count           4841.000000    4431.000000
-num_undercovered_bases      0.000000       0.000000
-num_called_bases        38131.000000   38888.000000
-num_correct_bases       33041.000000   33745.000000
-average_coverage            0.893800       0.912106
-snp_rate                    9.330991       9.275355
-insertion_rate              4.017728       3.949805
-deletion_rate              12.695707      11.394260
-correct_rate               86.651281      86.774841
-identity_percentage         0.711837       0.727004
+                          mincall_b0   mincall_b50   chiron_v0.3  albacore_v2.2.7  guppy_v0.5.1
+coverage_threshold      0.000000e+00  0.000000e+00  0.000000e+00     0.000000e+00  0.000000e+00
+snp_count               7.540000e+02  1.055000e+03  1.440000e+02     2.960000e+02  2.960000e+02
+insertion_count         1.000000e+01  2.700000e+01  1.000000e+00     5.500000e+01  5.100000e+01
+deletion_count          9.730000e+02  1.049000e+03  8.400000e+01     2.140000e+02  2.020000e+02
+num_undercovered_bases  0.000000e+00  0.000000e+00  0.000000e+00     0.000000e+00  0.000000e+00
+num_called_bases        5.518398e+06  5.518348e+06  5.519359e+06     5.519275e+06  5.519287e+06
+num_correct_bases       5.517634e+06  5.517266e+06  5.519214e+06     5.518924e+06  5.518940e+06
+average_coverage        2.057549e+02  1.327175e+02  2.064067e+02     2.069817e+02  2.068142e+02
+snp_rate                1.366339e-02  1.911804e-02  2.608999e-03     5.363023e-03  5.363012e-03
+insertion_rate          1.812120e-04  4.892769e-04  1.811805e-05     9.965077e-04  9.240324e-04
+deletion_rate           1.763193e-02  1.900931e-02  1.521916e-03     3.877321e-03  3.659893e-03
+correct_rate            9.998616e+01  9.998039e+01  9.999737e+01     9.999364e+01  9.999371e+01
+identity_percentage     9.996706e+01  9.996039e+01  9.999569e+01     9.999043e+01  9.999072e+01
