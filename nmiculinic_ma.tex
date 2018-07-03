@@ -1,6 +1,5 @@
 \documentclass[times, utf8, diplomski, english]{fer}
 \usepackage{booktabs}
-\usepackage[hidelinks]{hyperref}
 \usepackage{footnote}
 \usepackage{graphicx}
 \usepackage{mathtools}
@@ -9,6 +8,7 @@
 \usepackage{listings}
 \usepackage{protobuf/lang}  % include language definition for protobuf
 \usepackage{protobuf/style} % include custom style for proto declarations.
+\usepackage[hidelinks]{hyperref}
 
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
@@ -462,18 +462,23 @@ Example alignment is depicted in figure~\ref{fg:align}. We take the error correc
 
 \subsection{Data sources}
 
-Data has been downloaded from \url{https://data.genomicsresearch.org/Projects/online_dataset/train_set_all/}.  The following species were provided there by the Chiron team:
-\begin{itemize}
-    \item Human
-    \item E. Coli
-    \item Lambda Phage
-\end{itemize}
+Raw data has been acquired from Jared Simpson's E.Coli [TODO ref]
 
-For the concrete Chiron dataset, the re-squiggled preparation method was used. (The data was re-squiggled, that is after aligning the read on the reference, the read data is improved and each base pairs place on the raw signal is calculated.)
+It's been basecalled by Metrichor and corrected after aligning to reference using graphmap. 
+It consists of 90 thousands read divided into train set (60k) and validation set (30k)
+The devision is performed depending on read position on reference genome. 
+This way, further statistical bias is avoided if read's are sampled from the same genome region.
 
-The re-squiggled basecalled data is located at \verb|/Analyses/RawGenomeCorrected_000/BaseCalled_template/Events|. The interesting code fragments are in function processDataPoint of file \verb|minion_data/preperation/_re_squggled.py| from minion-data python package.
+% Data has been downloaded from \url{https://data.genomicsresearch.org/Projects/online_dataset/train_set_all/}.  The following species were provided there by the Chiron team:
+% \begin{itemize}
+    %\item Human
+    %\item E. Coli
+    %\item Lambda Phage
+%\end{itemize}
 
-After the gzipped dataset is prepared, it goes into the training pipeline. The whole training \& testing pipeline is available  open source on \url{https://github.com/nmiculinic/minion-basecaller}
+% For the concrete Chiron dataset, the re-squiggled preparation method was used. (The data was re-squiggled, that is after aligning the read on the reference, the read data is improved and each base pairs place on the raw signal is calculated.)
+% The re-squiggled basecalled data is located at \verb|/Analyses/RawGenomeCorrected_000/BaseCalled_template/Events|. The interesting code fragments are in function processDataPoint of file \verb|minion_data/preperation/_re_squggled.py| from minion-data python package.
+% After the gzipped dataset is prepared, it goes into the training pipeline. The whole training \& testing pipeline is available  open source on \url{https://github.com/nmiculinic/minion-basecaller}
 
 \section{Training pipeline}
 After getting data in the uniform format, the training part comes next. In aiming this as observable and simple as possible I've modeled config in using python3 \texttt{typing.NameTuple}~\footnote{\url{https://docs.python.org/3/library/typing.html}} and voluptuous for data validation. 
@@ -693,6 +698,7 @@ In figure~\ref{fg:consensus} shows how consensus is called from pileup created f
 After both consensus and read, alignment is calculated, we can represent the sequence alignment with CIGAR string, that is a sequence of matches(=), mismatches(X), insertions(I) and deletions(D). Additionally, at the beginning and end of the read alignment, soft(S) and hard(H) clips may be present which are removed. Additionally, padding information(P) and spliced alignment skip cigar(N) is likewise stipped from the analysis. These conventions are taken from SAM file format definitions. In the end, we're left with the following metrics as defined in figure~\ref{fg:metrics}.
 
 \begin{figure}
+\label{fg:metrics}
 \begin{align*}
  \text{read\_length} &= \#(=) + \#(X) + \#(I) \\ 
  \text{match\_rate} &= \frac{\#(=)}{\text{read\_length}} \\
@@ -701,33 +707,14 @@ After both consensus and read, alignment is calculated, we can represent the seq
  \text{deletion\_rate} &= \frac{\#(D)}{\text{read\_length}} \\
  \text{identity\_rate} &= \frac{\#(=)}{\#(=) + \#(X) +\#(I) + \#(D)}  
 \end{align*}
-\label{fg:metrics}
 \caption{Various perfomance measurement metrics as defined throughout this thesis.}
 \end{figure}
 
-\section{Other solutions}
-On his GitHub repo, Ryan Wick composed multiple basecaller comparasion~\citep{rwick_basecalling_cmp}~\footnote{\url{https://github.com/rrwick/Basecalling-comparison}}. This section briefly summarizes his work and it's recommended to check original authors work, it's quite good! Due to resource constraints both time and compute, I'm unable to run my own testing on my data, however, I can use a subset of Ryan Wick's dataset to perform my model evaluation, thus it's somewhat relevant. This summarization is composed of two figures, read identity in figure~\ref{fg:rwick_identity} and consensus identity in figure~\ref{fg:rwick_consensus}. All figures are pre-polished states.
-
-All definitions defined in the previous section are valid.
-
-\begin{figure}
-    \begin{center}
-        \includegraphics[width=\textwidth]{rwick_read_identity}
-        \caption{Basecallers read identity as tested by~\citep{rwick_basecalling_cmp}}
-        \label{fg:rwick_identity}
-    \end{center}
-\end{figure} 
-
-\begin{figure}
-    \begin{center}
-        \includegraphics[width=\textwidth]{rwick_assembly_identity}
-        \caption{Basecallers assembly identity as tested by~\citep{rwick_basecalling_cmp}}
-        \label{fg:rwick_consensus}
-    \end{center}
-\end{figure} 
+On his GitHub repo, Ryan Wick composed multiple basecaller comparasion~\citep{rwick_basecalling_cmp}~\footnote{\url{https://github.com/rrwick/Basecalling-comparison}}. 
+This section briefly summarizes his work and it's recommended to check original authors work, it's quite good! 
+Due to resource constraints both time and compute, I'm unable to run my own testing on my data with each basecaller. Thus I'm reusing Ryan's Wick's basecaller files for my analysis. 
 
 \section{Mincall}
-
 All previously mentioned metrics are displayed here. In figure~\ref{fg:identity_rate} is this solution compared to other basecallers on dataset proposed by~\citep{rwick_basecalling_cmp}.
 Figure~\ref{fg:tbp:all_metrics} provides mean per read statistics for all previously defined metrics. 
 For mincall, I've also calculated a distribution of each CIGAR operation (I, D, X, and =) over the relative reads length in figure~\ref{fg:error_distribution}.
@@ -736,10 +723,10 @@ Finally, I compare basecalling speeds between greedy search and beam search with
 Here it's clearly visible how much of bottleneck beam search is.
 
 \begin{figure}
+    \label{fg:identity_rate}
     \begin{center}
         \includegraphics[width=\textwidth]{read_violin_Identity}
         \caption{Basecallers read identity. All non-mincall ones are taken from~\cite{rwick_basecalling_cmp}}
-        \label{fg:identity_rate}
     \end{center}
 \end{figure}
 
@@ -753,7 +740,7 @@ Here it's clearly visible how much of bottleneck beam search is.
     \label{fg:error_distribution}
     \begin{center}
         \includegraphics[width=\textwidth]{alignment_b0_position_report.png}
-        \caption{CIGAR string distribution over the relative read position}
+        \caption{CIGAR string distribution over the relative read position. [TODO] Update for releavnce!!!}
     \end{center}
 \end{figure}
 
@@ -794,12 +781,25 @@ What Albacore uses underneath the hood isn't certain and I cannot comment on tha
 
 Most of the training is done on E. Coli, and lately, this set is expanded to the human genome and few other species. 
 It would be beneficial gathering dataset in some standardized format with quality control. 
-I've proposed the protobuf format and described it in section~\ref{sec:sec:data_preparation}. 
+I've proposed the protobuf format and described it in section~\ref{sec:data_preparation}. 
 Many other fields have their own Common Task Framework (CTF) benchmark, e.g. ImageNet, Cifar, etc. 
 \chapter{Conclusion}
 \label{chap:conslusion}
 
-[TODO] Write something smart here depending on the results. 
+The goal of this thesis was explore new model in the MinION Basecaller space. 
+I've opeted out using CNN on the raw waveform, and tried adding additional autoencoder loss to stabilize the trening. 
+Judging by results, this autoencoded loss hasn't brought substantial benefit as I had hoped. 
+
+In comparassion to state-of-the-art basecallers this solution is lagging behind, though it's my belief with refining it could be comparable.
+For further precision improvements most likely candidate is the pore's perfomance and reducing pore's signal noise.
+
+Additionally having two sensors in the pore, one measuring horizonatally and one vertically (that is across the pore) should provide greater accuracy and hopefully less error rates.
+
+I'm hoping in the coming years this technology shall increase in speed, accuracy and affordability, leading to multiple novel application. 
+As previously mentioned, knowing exact genome of our surroundings, e.g. infected wound, colon bacterias compositions or our own DNA variations enables
+not only our deeper understanding, but also more efficient personalized medicine. 
+
+We shall see what the future brings.
 
 \bibliography{literatura}
 \bibliographystyle{unsrtnat}
