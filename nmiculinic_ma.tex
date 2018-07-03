@@ -47,7 +47,7 @@ Oxford Nanopore Technology's MinION nanopore sequencing platform~\cite{mikheyev2
 Although MinION is able to produce long reads, even up to 882 kb~\cite{loman1-100k,loman2-800k}, they have an error rate of 10\% or higher. This master thesis uses R9.4 pore model and compares previous techniques with novel auto-encoder multi-task training. 
 
 \section{Organization}
-Chapter~\ref{chap:background} covers the sequencing technologies basics, Oxford nanopore technologies(ONT) sequencing model, and available solutions to MinION sequencing. 
+Chapter~\ref{chap:background} covers the sequencing technologies basics, Oxford Nanopore Technologies(ONT) sequencing model, and available solutions to MinION sequencing. 
 Chapter~\ref{chap:methods} covers common concepts, most from deep learning, used throughout this thesis. 
 Chapter~\ref{chap:system_arhitecture} covers the whole system architecture and important programming system parts. 
 Chapter~\ref{chap:results} goes into result analysis from the experiments.
@@ -71,7 +71,7 @@ Sequenced fragments are called reads.
 Genome assembly is the process of reconstructing the original genome from reads and usually starts with finding overlaps between reads.
 The quality of reconstruction heavily depends on the length and the quality (accuracy) of the reads produced by the sequencer. 
 
-If we have reference sequence we usually align the reads on the reference to aid us in the genome assembly. Otherwise, we have to use many de novo assembly techniques.
+If we have reference sequence we usually align the reads on the reference to aid us in the genome assembly. Otherwise, we have to use de novo assembly techniques.
 
 The right analogy would be building a puzzle. Since we cannot scan the whole puzzle because our camera is too small or imprecise, we are scanning pieces of the whole picture. Puzzle pieces would represent fragments in this analogy. If we have a map, even a rough one, it shall aid us in assembling those puzzle pieces into complete pictures. Otherwise, we're fiddling in the dark and using de novo assembly techniques.
 
@@ -89,17 +89,19 @@ Figure \ref{fg:sequencing} depicts process of sequencing visually.
 In 1977, Frederick Sanger~\citep{mile}\citep{Pettersson2009} started development of sequencing technologies. It allowed reading lengths up to 1000 bases with very high accuracy(99.9\%) at the cost of 1\$ per 1000 bases.
 Later, seconds generation sequencing, like IAN Torrent and Illumina devices, reduced the price while keeping the accuracy high. However, they had a cost of shorter read lengths, about a few hundred base pairs, which makes resolving repetitive regions practically impossible.
 
+Repeated regions are patterns of nucleic acids (base pairs) that occur in multiple copies throughout the genome. 
+
 Third generation sequencing technologies have longer read lengths at the accuracy's expense. PacBio, for example, developed technology with a few thousand bases with error rates of \textasciitilde10-15\%. 
 
-MinION sequences, which this master thesis use, made sequencing less expensive and even portable.
+MinION sequences, which this master thesis use, made sequencing more portable.
 
 \section{Oxford Nanopore MinION}
 
-The MinION device by Oxford Nanopore Technologies is the first portable DNA sequencing device. Its small weight, low cost, and long read length combined with decent accuracy yield promising results in various applications including full human genome assembly \cite{human_seq} what could potentially lead to personalized genomic medicine. It weighs only 87 grams, and its portability leads to uses on the international space station and the antarctic among other places.
+The MinION device by Oxford Nanopore Technologies is the first portable DNA sequencing device. Its small weight, low cost, and long read length combined with decent accuracy yield promising results in various applications including full human genome assembly \cite{human_seq} what could potentially lead to precision medicine. It weighs only 87 grams, and its portability leads to uses on the international space station and the Antarctic among other places.
 
-Under the hood, it has numerous nano-meter sized pores, thus a names Nanopore. Each pore has a width of around 6 nucleotides. Under electric current DNA strand passing through the pore and changes its electric resistance. The sensor measures the current through the pore multiple times a second~\footnote{The model we worked with had 4000 samples per seconds}. This signal varies depending which k-mer is occupying the pore, and on its basis, we're performing the basecalling. On figure~\ref{fg:nanopore} this process is visually depicted. 
+Under the hood, it has numerous nano-meter sized pores, thus a names Nanopore. Each pore has a depth of around 6 nucleotides. Under electric current DNA strand passing through the pore and changes its electric resistance. The sensor measures the current through the pore multiple times a second~\footnote{The model we worked with had 4000 samples per seconds}. This signal varies depending which k-mer is occupying the pore, and on its basis, we're performing the basecalling. On figure~\ref{fg:nanopore} this process is visually depicted. 
 
-MinION devices can produce long reads, usually tens of thousand base pairs (with reported reads lengths of 100 thousand \cite{loman1-100k} and even recently above 800 thousand base pairs \cite{loman2-800k}), but with high sequencing error than older generations of sequencing technologies.
+MinION devices can produce long reads, usually tens of thousand base pairs (with reported reads lengths of 100 000\cite{loman1-100k} and even recently above 800 000 base pairs \cite{loman2-800k}), but with higher sequencing error than older generations of sequencing technologies.
 
 \begin{figure}[!ht]
     \begin{center}
@@ -128,13 +130,13 @@ The sequencing resulting file is in FAST5 format, which is adapted HDF5 file for
 This subsection covers various basecallers published by ONT, the MinION device maker.
 \subsubsection{Metrichor}
 
-Metrichor is now defunct cloud-based basecaller. The older versions used \textit{hidden Markov models} (HMM) as the underlying algorithm. Preprocessing started with segmenting signal into smaller chunks called events with their start, end, length, mean signal strength and standard deviation. These events are observations in the HMM model, and the underlying generating hidden sequence is the sequence of 6-mers. They build their HMM transition matrix with stay, skip 1 and skip 2 probabilities, that is underlying 6-mer cannot move for more than 2 nucleotides per event. Basecalling is performed using the Viterbi algorithm. This approach showed poor results when calling long homopolymer stretches as the context in the pore remains the same \cite{homopolymers}\cite{homopolimeri_analiza}.
+Metrichor is a defunct cloud-based basecaller. The older versions used \textit{hidden Markov models} (HMM) as the underlying algorithm. Preprocessing started with segmenting signal into smaller chunks called events with their start, end, length, mean signal strength and standard deviation. These events are observations in the HMM model, and the underlying generating hidden sequence is the sequence of 6-mers. They build their HMM transition matrix with stay, skip 1 and skip 2 probabilities, that is underlying 6-mer cannot move for more than 2 nucleotides per event. Basecalling is performed using the Viterbi algorithm. This approach showed poor results when calling long homopolymer stretches as the context in the pore remains the same \cite{homopolymers}\cite{homopolimeri_analiza}.
 
 \subsubsection{Nanonet}
 Nanonet is ONT first-generation neural network basecaller. It used to be available on GitHub, but it's now defunct and unavailable.
 
 \subsubsection{Albacore}
-Albacore is a production basecaller provided by Oxford Nanopore and uses a command-line interface. It
+Albacore is a production basecaller provided by Oxford Nanopore Technologies and uses a command-line interface. It
 utilizes the latest in Recurrent Neural Network algorithms in order to interpret the signal data from the
 nanopore and basecall the DNA or RNA passing through the pore. It implements stable features into
 Oxford Nanopore Technologies’ software products, and is fully supported. It receives .fast5 files as an
@@ -299,6 +301,14 @@ Fox example, maxPool2d for image sized 50x50 shall with pool size (2,2) divides 
 This is visually depicted in figure~\ref{fg:maxpool}.
 Common choices are AvgPool, and MaxPool~\citep{Scherer:2010:EPO:1886436.1886447}~\footnote{\url{https://keras.io/layers/pooling/}}.
 
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Pooling_Simple_max}
+        \caption{Example of max pool layer in convolutional neural network. Adapted from~\url{https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/pooling_layer.html}}
+        \label{fg:maxpool}
+    \end{center}
+\end{figure}
+
 \section{CTC loss}
 \label{sec:ctc_loss}
 
@@ -307,11 +317,11 @@ How do you measure how much are two sequences similar in the differentiable mann
 However, in this architecture, we're outputting logits whose size depend only on the input signal size. First, let's start with some alphabet, $\Sigma = \{A, G, T, C\}$ of the output symbols we're using.  
 Let's say the target sequence is \texttt{AAG} and we're having 5 logits due to input signal constraints. 
 Logits have shape $[\text{sequence length}, \text{num classes}]$. 
-What is the ideal logit values to get this target sequence to the output?. 
+What is the ideal logit values to get this target sequence to the output? 
 First, we must define how the sequence is decoded. 
 The logit sequence is decoded by finding the most likely path through the logits at each time step $t$. Our logits can be represented as on figure~\ref{fg:ctc_graph_0}.
 But we're presented with a problem, if we pick path \texttt{AAAAG} how do we finally decode this sequence as target \texttt{AAG}? The solution proposed in original paper for Connectionist Temporal Classification(CTC)~\citep{Graves:2006:CTC:1143844.1143891, ctc-blog} is indeed brilliant. 
-We introduce a special gap symbol, $-$. 
+We introduce a special blank symbol, $-$. Whenever model outputs blank symbol it's taken as nothing more than padding and class separator. 
 That way our logits can output \texttt{A-A-G} which shall decode in the target sequence.
 But what about \texttt{AA--G}? How is this decoded when there are consecutive repeated classes in the most probable path. 
 Decoding depends on which CTC variant we used during training. There's option to \texttt{merge\_repeated}, that is decode \texttt{AAA-G} as \texttt{AG}, or if it's false decode it as \texttt{AAAG} by simply dropping the blanks. 
@@ -366,7 +376,7 @@ All is fine and dandy during training, but during inference, we're left with a c
 
 To battle this problem we have 2 solutions. First is using greedy approach, and find the path such that we're picking the most probably class at each time step, and composing path out of it.
 
-Better approximation, however, is between those two extremes. Beam search decoding~\cite{graves_decode}. At each time step, we're only looking at top $N$ paths up until this point. Parameter $N$ is called beam width. From time $t$ to $t+1$ we have dynamic programming transitions, where we look at all possible path continuations and keep only the best $N$ ones until reached the end. Then we output the best one as our decoded path, apply post-processing (merge repeated if configure in that mode, drop blanks) and we're done.
+Better approximation, however, is between those two extremes, greedy and exhaustive search. Beam search decoding~\cite{graves_decode}. At each time step, we're only looking at top $N$ paths up until this point. Parameter $N$ is called beam width. From time $t$ to $t+1$ we have dynamic programming transitions, where we look at all possible path continuations and keep only the best $N$ ones until reached the end. Then we output the best one as our decoded path, apply post-processing (merge repeated if configure in that mode, drop blanks) and we're done.
 
 \section{Autoencoder}
 \label{sec:autoencoder}
@@ -377,18 +387,11 @@ Multi-task learning~\footnote{\url{http://ruder.io/multi-task/}}~\citep{multi-ta
 It has been shown it may lead to better performance than learning a specific model for each task. 
 So far it has been successfully applied in many domains, including natural language processing~\citep{Collobert:2008:UAN:1390156.1390177}, speech recognition~\citep{speech_multitask}, computer vision~\citep{cv-multitask}, drug discovery~\citep{ramsundar2015massively} and many other areas. 
 
-In the context of MinION basecalling, I'm combining two tasks. 
+In the context of MinION basecalling, I combine two tasks. 
 The first one is basecalling the sequence, that is deriving appropriate logits which shall minimize CTC loss defined in section~\ref{sec:ctc_loss}, and autoencoder reconstruction original signal from said logits using \texttt{L2} loss for distance measurement~\footnote{Maybe it would be better using dynamic time warping distance measurement, however, due to technical requirements of implementing in tensorflow the author chose the simpler option. This would be future work section} between signals. 
 
 The idea is this additional loss helps models learn better logits by training on not only one but two tasks. In chapter~\ref{chap:results} you can see the detailed analysis of this approach.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{Pooling_Simple_max}
-        \caption{Example of max pool layer in convolutional neural network. Adapted from~\url{https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/pooling_layer.html}}
-        \label{fg:maxpool}
-    \end{center}
-\end{figure}
 
 %%  ######  ##    ##  ######  ######## ######## ##     ##    ###    ########  ##     ## #### ######## ########  ######  ######## ##     ## ########  ######## 
 %% ##    ##  ##  ##  ##    ##    ##    ##       ###   ###   ## ##   ##     ## ##     ##  ##     ##    ##       ##    ##    ##    ##     ## ##     ## ##       
@@ -402,7 +405,7 @@ The idea is this additional loss helps models learn better logits by training on
 \label{chap:system_arhitecture}
 \section{Data Preparation}
 \label{sec:data_preparation}
-In previous project incarnation, we used fast5 with additional custom .ref files as our dataset. This setup had some issues. First, it was IO heavy since we were reading the whole fast5 file which contained non-raw data section~\footnote{like basecalling from other basecallers}, data management with separated raw files and labels, and lastly it was a magic to parse it every time. Which exactly group or subgroup within fast5, or is the signal start normalized to 0, or is it some arbitrary begging written at some other place in fast5 files changes from version to version. 
+In previous project implementation, we used fast5 with additional custom .ref files as our dataset. This setup had some issues. First, it was IO heavy since we were reading the whole fast5 file which contained non-raw data section~\footnote{like basecalling from other basecallers}, data management with separated raw files and labels, and lastly it was a magic to parse it every time. Which exactly group or subgroup within fast5, or is the signal start normalized to 0, or is it some arbitrary begging written at some other place in fast5 files changes from version to version. 
 
 Therefore, for this project, I've decided to make my own custom format for training described via protobuf~\citep{protobuf}. The issue from previous versions wasn't the only reason. Another was ease of importing other peoples data in their formats into this one. If I can read it, I can easily write plugin converting between formats. As of writing this thesis, 4 such plugins were written since I wasn't sure which data I shall use and in which format am I going to import them in. 
 
@@ -462,7 +465,7 @@ Example alignment is depicted in figure~\ref{fg:align}. We take the error correc
 
 \subsection{Data sources}
 
-Raw data has been acquired from Jared Simpson's E.Coli [TODO ref]
+Raw data has been acquired from Jared Simpson's E.Coli sequenced with R9.4 pore chemistry. 
 
 It's been basecalled by Metrichor and corrected after aligning to reference using graphmap. 
 It consists of 90 thousands read divided into train set (60k) and validation set (30k)
@@ -555,7 +558,7 @@ train:
     \end{center}
 \end{figure}
 
-Input data is read via background thread which processes it, packages it into signal and label slices, and pushed into tensorflow space queues. Inside those queues, data is shuffled, and composed into batched for further training. This part of the code has an extensive test suite, including end2end tests with the golden file~\footnote{golden file is test technique where you save function output to the golden file, verify manually it's correct, and after each successive test, you're checking that nothing changed. This way we can be sure refactoring didn't influence correctness.}
+Input data is read via background thread which processes it, packages it into signal and label slices, and pushed into tensorflow space queues. Inside those queues, data is shuffled, and composed into batches for further training. This part of the code has an extensive test suite, including end2end tests with the golden file~\footnote{golden file is test technique where you save function output to the golden file, verify manually it's correct, and after each successive test, you're checking that nothing changed. This way we can be sure refactoring didn't influence correctness.}
 
 From configuration rest of the pipeline is initialized. This included model, with its hyperparameters, loading config defined train and test sets, learning rate schedule, sequence lengths, batch size and other settings. Keras is used for model definition due to its simplicity in design. 
 
