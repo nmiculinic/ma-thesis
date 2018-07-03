@@ -105,7 +105,7 @@ MinION devices can produce long reads, usually tens of thousand base pairs (with
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{nanopore}
+        \includegraphics[width=0.8\textwidth]{nanopore}
         
         \caption[DNA strain being pulled through a nanopore]{DNA strain being pulled through a nanopore \protect\footnotemark}
         \label{fg:nanopore}
@@ -115,9 +115,9 @@ MinION devices can produce long reads, usually tens of thousand base pairs (with
 
 The sequencing resulting file is in FAST5 format, which is adapted HDF5 file format, popular in the bioinformatics community. It stores raw signal, alongside various metadata. Unfortunately, many basecallers, including the official ones, upon executing store their results in the FAST5 files. It leads to data and processing coupling in single file and bloated file sizes. 
 
-\begin{figure}[!ht]
+\begin{figure}
     \begin{center}
-        \includegraphics[width=0.6\textwidth]{fast5_sample}
+        \includegraphics[width=\textwidth]{fast5_sample}
         \caption[Structure of FAST5 file and raw signal plot show in \textit{HDFView}]{Structure of FAST5 file and raw signal line plot show in \textit{HDFView} \protect\footnotemark}
         \label{fg:fast5}
     \end{center}
