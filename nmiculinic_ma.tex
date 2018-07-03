@@ -715,7 +715,7 @@ After both consensus and read, alignment is calculated, we can represent the seq
 
 On his GitHub repo, Ryan Wick composed multiple basecaller comparasion~\citep{rwick_basecalling_cmp}~\footnote{\url{https://github.com/rrwick/Basecalling-comparison}}. 
 This section briefly summarizes his work and it's recommended to check original authors work, it's quite good! 
-Due to resource constraints both time and compute, I'm unable to run my own testing on my data with each basecaller. Thus I'm reusing Ryan's Wick's basecalled files for my analysis. 
+Due to resource constraints both time and compute, I'm unable to run my own testing on my data with each basecaller. Thus I'm reusing Ryan's Wick's basecalled files for my analysis. He used Klebsiella pneumoniae bacteria.
 
 \section{Mincall}
 All previously mentioned metrics are displayed here. In figure~\ref{fg:identity_rate} is this solution compared to other basecallers on dataset proposed by~\citep{rwick_basecalling_cmp}.
@@ -804,19 +804,28 @@ not only our deeper understanding, but also more efficient personalized medicine
 
 We shall see what the future brings.
 
+
 \bibliography{literatura}
 \bibliographystyle{unsrtnat}
-% \bibliographystyle{plainnat}
 
 \begin{abstract}
-In the MinION device, single-stranded DNA fragments move through nanopores, which causes drops in the electric current. The electric current is measured at each pore several thousand times per second. Each event is described by the mean and variance of the current and by event duration. This sequence of events is then translated into a DNA sequence by a base caller. Develop a base-caller for MinION nanopore sequencing platform using a deep learning architecture such as convolutional neural networks and recurrent neural networks. Instead of events, use current waveform at the input. Compare the accuracy with the state-of-the-art basecallers. For testing purposes use publicly, available datasets and Graphmap or Minimap 2 tools for aligning called reads on reference genomes.  Implement method using TensorFlow or similar library. The code should be documented and hosted on a publicly available Github repository.
+The MinION device by Oxford Nanopore Technologies is the first portable DNA sequencing device. 
+Main advantages include producing longer reads than competing technologies and real-time data analysis making it suitable for a wide array possible applications. 
+Although long reads of up to 882 kb can be achieved, this comes at a cost - an error rate of 10\% or higher.
+The goal of this thesis is to explore novel basecaller training technique using multi-task training and autoencoder loss as a secondary task to improve performance of basecalling.
+The model has been trained on R9.4 E.Coli dataset and has been compared with contemporary solutions on Klebsiella pneumoniae dataset. The complete source code is available on \url{https://github.com/nmiculinic/minion-basecaller/}.
 
 \keywords{base calling, Oxford Nanopore Technologies, MinION, deep learning, seq2seq, convolutional neural network, residual network, CTC loss}
 \end{abstract}
 
 \hrtitle{S kraja na kraj model dubokog učenja za određivanje očitanih baza dobivenih uređajem za sekvenciranje MinION}
 \begin{sazetak}
-    Unutar uređaja MinION, fragmenti jednostruke DNA prolaze kroz nanopore, što uzrokuje promjene u električnoj struji. Struja proizvedena na svakoj nanopori mjeri se nekoliko tisuća puta u sekundi. Svaki događaj opisan je srednjom vrijednosti i varijancom struje te svojim trajanjem. Postupak kojim se takav slijed događaja prevodi u niz nukleotida naziva se određivanje očitanih baza. Razviti alat za prozivanje baza za uređaj za sekvenciranje MinION koristeći modele dubokog učenje kao što su konvolucijske i povratne neuronske mreže. Umjesto događaja na ulazu koristi valni oblik struje. Usporediti dobivenu točnost s postojećim rješenjima. U svrhu testiranja koristiti javno dostupne skupove podataka i alate GraphMap ili Minimap 2 za poravnanje očitanja na referentni genom. Alat implementirati koristeći programsku biblioteku TensorFlow (ili neku sličnu). Programski kod treba biti dokumentiran i javno dostupan preko repozitorija GitHub.
+    Uređaj MinION od firme Oxford Nanopore Technologies je prvi portabilni DNA sekvencer. 
+    Glavne prednosti uključuju dulje sekvence nego konkurentske tehnologije i analitiku u stvarnom vremenu. 
+    Iako duge sekvence do 882 000 baznih parova mogu biti postignute, to dolazi uz cijenu preciznosti of 10\% ili vise. 
+    Cilj ovog diplomskog rada je istražiti novu metodu treniranja sekvencora koristeći vise-zadačni trening i autoenkoder kao sekundarni zadatak u svrhu unaprijeđena točnosti primarnog, sekvencioniranja. 
+    Model je istreniran na R9.4 E.Coli podacima i uspoređen je s ostalim rješenjima na Klebsiella pneumoniae podacima. 
+    Kompletni se izvorni kod nalazi na \url{https://github.com/nmiculinic/minion-basecaller/}.
 \kljucnerijeci{određivanje baza, Oxford Nanopore Technologies, MinION, duboko učenje, prevođenje, konvolucijske neuronske mreže, rezidualne mreže, CTC gubitak}
 \end{sazetak}
 
