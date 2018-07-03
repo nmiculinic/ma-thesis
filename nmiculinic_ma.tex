@@ -247,8 +247,8 @@ for act in ["relu","selu", "elu"]:
             plt.plot(xx, yy, label=act)
             plt.legend()
 \end{lstlisting}
-\label{fg:actcode}
 \caption{Code generating the activation function plot. Also shows how tensorflow and keras could be used}
+\label{fg:actcode}
 \end{figure}
 
 \begin{figure}
@@ -641,7 +641,6 @@ using only CNN layers without RNN layers which have hidden state. I have a hunch
 A Picture is worth a thousand words, and this process is depicted in figure~\ref{fg:logit_comp}
 
 \begin{figure}
-\label{fg:logit_comp}
 \begin{center}
 \begin{verbatim}
 1111111122223333
@@ -649,8 +648,9 @@ A Picture is worth a thousand words, and this process is depicted in figure~\ref
 ....22222222....
 ........33333333
 \end{verbatim}
-\caption{Process of overlapping stripes in logit space. Number signal from which stripe the logit information comes and at the top composite logit is assembled.}
 \end{center}
+\caption{Process of overlapping stripes in logit space. Number signal from which stripe the logit information comes and at the top composite logit is assembled.}
+\label{fg:logit_comp}
 \end{figure}
 
 An alternative approach is used in Chiron~\citep{chiron_teng} where they first decode each stripe, then assemble them. 
@@ -701,7 +701,6 @@ In figure~\ref{fg:consensus} shows how consensus is called from pileup created f
 After both consensus and read, alignment is calculated, we can represent the sequence alignment with CIGAR string, that is a sequence of matches(=), mismatches(X), insertions(I) and deletions(D). Additionally, at the beginning and end of the read alignment, soft(S) and hard(H) clips may be present which are removed. Additionally, padding information(P) and spliced alignment skip cigar(N) is likewise stipped from the analysis. These conventions are taken from SAM file format definitions. In the end, we're left with the following metrics as defined in figure~\ref{fg:metrics}.
 
 \begin{figure}
-\label{fg:metrics}
 \begin{align*}
  \text{read\_length} &= \#(=) + \#(X) + \#(I) \\ 
  \text{match\_rate} &= \frac{\#(=)}{\text{read\_length}} \\
@@ -711,6 +710,7 @@ After both consensus and read, alignment is calculated, we can represent the seq
  \text{identity\_rate} &= \frac{\#(=)}{\#(=) + \#(X) +\#(I) + \#(D)}  
 \end{align*}
 \caption{Various perfomance measurement metrics as defined throughout this thesis.}
+\label{fg:metrics}
 \end{figure}
 
 On his GitHub repo, Ryan Wick composed multiple basecaller comparasion~\citep{rwick_basecalling_cmp}~\footnote{\url{https://github.com/rrwick/Basecalling-comparison}}. 
@@ -726,35 +726,34 @@ Finally, I compare basecalling speeds between greedy search and beam search with
 Here it's clearly visible how much of bottleneck beam search is.
 
 \begin{figure}
-    \label{fg:identity_rate}
     \begin{center}
         \includegraphics[width=\textwidth]{read_violin_Identity}
-        \caption{Basecallers read identity. All non-mincall ones are taken from~\cite{rwick_basecalling_cmp}}
     \end{center}
+    \caption{Basecallers read identity. All non-mincall ones are taken from~\cite{rwick_basecalling_cmp}}
+    \label{fg:identity_rate}
 \end{figure}
 
 \begin{figure}
-\label{fg:tbp:all_metrics}
 \input{./fig_gen/error_rates.tex}
 \caption{Mean read metrics across basecallers. All non-mincall ones are taken from~\cite{rwick_basecalling_cmp}}
+\label{fg:tbp:all_metrics}
 \end{figure}
 
 \begin{figure}
-    \label{fg:error_distribution}
     \begin{center}
         \includegraphics[width=\textwidth]{alignment_position_report.png}
-        \caption{CIGAR string distribution over the relative read position. Due to speed considerations performed only on small data subset.}
     \end{center}
+    \caption{CIGAR string distribution over the relative read position. Due to speed considerations performed only on small data subset.}
+    \label{fg:error_distribution}
 \end{figure}
 
 \begin{figure}
-\label{fg:concensus_report}
 \input{./fig_gen/all_consensus_report.tex}
 \caption{Consensus report among the tested basecallers. All non-mincall ones are taken from~\cite{rwick_basecalling_cmp}}
+\label{fg:concensus_report}
 \end{figure}
 
 \begin{figure}
-\label{fg:basecaller_speed}
 \begin{tabular}{lrrr}
 \toprule
 {}                          &    Speed(bp/s) \\
@@ -765,6 +764,7 @@ beam search (beam width 50) &  8 554     \\
 \bottomrule
 \end{tabular}
 \caption{Basecaller speed depending on logit decoding strategy. All Tests were using Titan Xp GPU for logits and CPU for decoding on 32 core Intel Xeon E5-2640 @2Ghz}
+\label{fg:basecaller_speed}
 \end{figure}
 
 
