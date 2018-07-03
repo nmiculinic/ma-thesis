@@ -376,7 +376,15 @@ All is fine and dandy during training, but during inference, we're left with a c
 
 To battle this problem we have 2 solutions. First is using greedy approach, and find the path such that we're picking the most probably class at each time step, and composing path out of it.
 
-Better approximation, however, is between those two extremes, greedy and exhaustive search. Beam search decoding~\cite{graves_decode}. At each time step, we're only looking at top $N$ paths up until this point. Parameter $N$ is called beam width. From time $t$ to $t+1$ we have dynamic programming transitions, where we look at all possible path continuations and keep only the best $N$ ones until reached the end. Then we output the best one as our decoded path, apply post-processing (merge repeated if configure in that mode, drop blanks) and we're done.
+Better approximation, however, is between those two extremes, greedy and exhaustive search. Beam search decoding~\cite{graves_decode}. At each time step, we're only looking at top $N$ paths up until this point. Parameter $N$ is called beam width. From time $t$ to $t+1$ we have dynamic programming transitions, where we look at all possible path continuations and keep only the best $N$ ones until reached the end. Then we output the best one as our decoded path, apply post-processing (merge repeated if configure in that mode, drop blanks) and we're done. It's visually depicted in figure~\ref{fg:beam_search}.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{beam_search}
+        \caption{Beam search with beam width=3. At each time step we're remembering top beam width paths, and expand from those to generate top beam width path in next time step.}
+        \label{fg:beam_search}
+    \end{center}
+\end{figure}
 
 \section{Autoencoder}
 \label{sec:autoencoder}
