@@ -492,9 +492,10 @@ This way, further statistical bias is avoided if read's are sampled from the sam
 % After the gzipped dataset is prepared, it goes into the training pipeline. The whole training \& testing pipeline is available  open source on \url{https://github.com/nmiculinic/minion-basecaller}
 
 \section{Training pipeline}
+\label{sec:training_pipeline}
 After getting data in the uniform format, the training part comes next. In aiming this as observable and simple as possible I've modeled config in using python3 \texttt{typing.NameTuple}~\footnote{\url{https://docs.python.org/3/library/typing.html}} and voluptuous for data validation. 
 With those two tools, I've created statically typed configuration file format and data validation with a human-readable error. As serialization format, I've chosen YAML for its readability and terseness. 
-The config file definiton is in figure~\ref{fg:train_cfg_py} and example config file for training is in figure~\ref{fg:train_cfg_yml}. The source code can be found in module \texttt{mincall.train.\_train.py} and we're recommending reading it for extended details.
+The config file definiton is in figure~\ref{fg:train_cfg_py} and example config file for training is in figure~\ref{fg:train_cfg_yml}. The source code can be found in module \texttt{mincall.train.\_train.py} and we recommend reading it for extended details.
 
 \begin{figure}
     \begin{center}
